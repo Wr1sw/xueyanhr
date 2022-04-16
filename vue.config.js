@@ -1,4 +1,22 @@
+let proxyObj = {};
+proxyObj['/ws'] = {
+  ws: false,
+  target: "ws://localhost:8081"
+};
+proxyObj['/'] = {
+  ws: false,
+  target: "http://localhost:8081",
+  changeOrigin: true,
+  pathRewrite: {
+    '^/':''
+  }
+}
 const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
-  transpileDependencies: true
+  transpileDependencies: true,
+  devServer: {
+    host: 'localhost',
+    port: 8080,
+    proxy: proxyObj
+  }
 })
