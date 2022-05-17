@@ -23,11 +23,16 @@ Vue.config.productionTip = false
 Vue.use(ElementUI);
 
 router.beforeEach((to, from, next) => {
-  if (to.path == '/login') {
+  if (to.path == '/') {
     next()
   } else {
-    initMenu(router, store);
-    next()
+    if (window.sessionStorage.getItem("user")) {
+      initMenu(router, store);
+      next()
+    } else {
+      next('/?redirect='+to.path);
+    }
+
   }
 })
 
