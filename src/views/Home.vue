@@ -34,7 +34,7 @@
         <div class="homeWelcome" v-if="this.$router.currentRoute.path == '/home'">
           欢迎来到雪研人事管理系统
         </div>
-        <router-view/>
+        <router-view class="homeRouterView"/>
       </el-main>
     </el-container>
   </el-container>
@@ -111,5 +111,8 @@ export default {
   font-family: 华文行楷;
   color: #409eff;
   padding-top: 50px;
+}
+.homeRouterView {
+  margin-top: 20px;
 }
 </style>
