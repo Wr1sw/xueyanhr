@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { Message } from 'element-ui';
+import router  from "@/router";
 import message from "element-ui/packages/message";
 
 axios.interceptors.response.use(success=>{
@@ -19,6 +20,7 @@ axios.interceptors.response.use(success=>{
         Message.error({message:'权限不足，请联系管理员'})
     } else if (error.response.status == 401) {
         Message.error({message:'要登陆的哟'})
+        router.replace('/')
     } else {
         if (error.response.data.msg) {
             Message.error({message: error.response.data.msg})
