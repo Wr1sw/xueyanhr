@@ -11,13 +11,14 @@ import {postRequest} from "@/utils/api";
 import {getRequest} from "@/utils/api";
 import {putRequest} from "@/utils/api";
 import {deleteRequest} from "@/utils/api";
+import echarts from "echarts";
 
 Vue.prototype.postRequest = postRequest;
 Vue.prototype.postKeyValueRequest = postKeyValueRequest;
 Vue.prototype.getRequest = getRequest;
 Vue.prototype.putRequest = putRequest;
 Vue.prototype.deleteRequest = deleteRequest;
-
+Vue.prototype.$echarts = echarts;
 
 Vue.config.productionTip = false
 Vue.use(ElementUI);
