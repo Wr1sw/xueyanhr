@@ -2,16 +2,20 @@
   <el-container>
     <el-header class="homeHeader">
       <div class="title">雪研</div>
-      <el-dropdown class="userInfo" @command="commandHandler">
+      <div>
+        <el-button icon="el-icon-bell" type="text" style="margin-right: 8px;color: #000000;" size="normal" @click="goChat"></el-button>
+        <el-dropdown class="userInfo" @command="commandHandler">
         <span class="el-dropdown-link">
           {{ user.name }}<i><img :src="user.userface" alt=""></i>
         </span>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item command="userinfo">个人中心</el-dropdown-item>
-          <el-dropdown-item command="setting">设置</el-dropdown-item>
-          <el-dropdown-item divided command="logout">注销登录</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command="userinfo">个人中心</el-dropdown-item>
+            <el-dropdown-item command="setting">设置</el-dropdown-item>
+            <el-dropdown-item divided command="logout">注销登录</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
+
     </el-header>
 
     <el-container>
@@ -54,6 +58,9 @@ export default {
     }
   },
   methods: {
+    goChat(){
+      this.$router.push("/chat")
+    },
     commandHandler(cmd) {
       if (cmd == 'logout') {
         this.$confirm('此操作将注销登录, 是否继续?', '提示', {
