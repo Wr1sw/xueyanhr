@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from 'vuex'
-
+import {getRequest} from "@/utils/api";
 Vue.use(Vuex)
 
 const now = new Date();
@@ -11,34 +11,9 @@ const now = new Date();
 const store =  new Vuex.Store({
     state: {
         routes:[],
-        sessions:[{
-            id:1,
-            user:{
-                name:'示例介绍',
-                img:'http://b.hiphotos.baidu.com/image/pic/item/e824b899a9014c08878b2c4c0e7b02087af4f4a3.jpg'
-            },
-            messages:[{
-                content:'Hello，这是一个基于Vue + Vuex + Webpack构建的简单chat示例，聊天记录保存在localStorge, 有什么问题可以通过Github Issue问我。',
-                date:now
-            },{
-                content:'项目地址(原作者): https://github.com/coffcer/vue-chat',
-                date:now
-            },{
-                content:'本项目地址(重构): https://github.com/is-liyiwei',
-                date:now
-            }]
-        },{
-            id:2,
-            user:{
-                name:'webpack',
-                img:'http://b.hiphotos.baidu.com/image/pic/item/e824b899a9014c08878b2c4c0e7b02087af4f4a3.jpg'
-            },
-            messages:[{
-                content:'Hi，我是webpack哦',
-                date:now
-            }]
-        }],
-        currentSessionId:1,
+        sessions:[],
+        hrs:[],
+        currentSessionId:-1,
         filterKey:''
     },
     mutations: {
@@ -55,10 +30,26 @@ const store =  new Vuex.Store({
                 self:true
             })
         },
+        INIT_DATA (state) {
+            // 浏览器本地的聊天记录
+            // let data = localStorage.getItem('vue-chat-session');
+            // //console.log(data)
+            // if (data) {
+            //     state.sessions = JSON.parse(data);
+            // }
+        },
+        INIT_HR(state, data) {
+            state.hrs = data;
+        }
     },
     actions: {
         initData(context) {
             context.commit('INIT_DATA')
+            getRequest("/chat/hrs").then(resp=>{
+                if (resp) {
+                    context.commit('INIT_HR', resp)
+                }
+            })
         }
     }
 })

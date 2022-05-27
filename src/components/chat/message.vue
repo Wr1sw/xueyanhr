@@ -1,12 +1,12 @@
 <template>
-  <div id="message" v-scroll-bottom="session">
+  <div id="message" v-scroll-bottom="sessions">
   	<ul v-if="currentSessionId==item.id" v-for="item in sessions">
   		<li v-for="entry in item.messages">
   			<p class="time">
   				<span>{{entry.date | time}}</span>
   			</p>
   			<div class="main" :class="{self:entry.self}">
-  				<img class="avatar" :src="entry.self ? img : item.user.img" alt="">
+  				<img class="avatar" :src="entry.self ? user.userface : item.user.img" alt="">
   				<p class="text">{{entry.content}}</p>
   			</div>
   		</li>
@@ -21,7 +21,7 @@ export default {
   name: 'message',
   data () {
     return {
-      img: 'http://b.hiphotos.baidu.com/image/pic/item/e824b899a9014c08878b2c4c0e7b02087af4f4a3.jpg'
+      user:JSON.parse(window.sessionStorage.getItem("user")),
     }
   },
   computed:mapState([
