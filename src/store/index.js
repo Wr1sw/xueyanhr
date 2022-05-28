@@ -33,7 +33,9 @@ const store =  new Vuex.Store({
         addMessage (state,msg) {
             let ms = state.sessions[state.currentHr.username+'#'+msg.to];
             if (!ms) {
-                state.sessions[state.currentHr.username+'#'+msg.to] = [];
+                // state.sessions[state.currentHr.username+'#'+msg.to] = [];
+                // fix auto fresh
+                Vue.set(state.sessions,state.currentHr.username+'#'+msg.to,[]);
             }
             state.sessions[this.state.currentHr.username+'#'+msg.to].push({
                 content:msg.content,
