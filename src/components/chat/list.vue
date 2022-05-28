@@ -1,7 +1,8 @@
 <template>
   <div id="list">
   	<ul style="padding-left: 0px">
-  		<li v-for="item in hrs" :class="{ active: item.id === currentSessionId }" v-on:click="changeCurrentSessionId(item.id)"><!--   :class="[item.id === currentSessionId ? 'active':'']" -->
+  		<li v-for="item in hrs" :class="{ active: currentSession?item.username === currentSession.username:false}"
+          v-on:click="changeCurrentSession(item)"><!--   :class="[item.id === currentSession ? 'active':'']" -->
   			<img class="avatar" :src="item.userface" :alt="item.name">
   			<p class="name">{{item.name}}</p>
   		</li>
@@ -21,11 +22,11 @@ export default {
   },
   computed: mapState([
   'hrs',
-  'currentSessionId'
+  'currentSession'
 	]),
   methods:{
-  	changeCurrentSessionId:function (id) {
-  		this.$store.commit('changeCurrentSessionId',id)
+  	changeCurrentSession(currentSession) {
+  		this.$store.commit('changeCurrentSession',currentSession)
   	}
   }
 }
