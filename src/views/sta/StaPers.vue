@@ -1,14 +1,16 @@
 <template>
   <div>
     <div class="dom">
-      <div class="dom1" id = "school"/>
-      <div class="dom1" id = "perCount"/>
-      <div class="dom1" id = "topDegree"/>
+      <div class="dom1" id = "bar"/>
+      <div class="dom2" id = "pie"/>
     </div>
-    <div class="dom">
-      <div class="dom1" id = "major"/>
-      <div class="dom1" id = "position"/>
-      <div class="dom1" id = "wedlock"/>
+    <div class="dom_choice">
+      <div class="choice"><el-button type="success" icon="el-icon-s-promotion" autofocus plain @click="onClick('schoolInfo')">学校信息</el-button></div>
+      <div class="choice"><el-button type="success" icon="el-icon-s-promotion" plain @click="onClick('major')">专业信息</el-button></div>
+      <div class="choice"><el-button type="success" icon="el-icon-s-promotion" plain @click="onClick('topDegree')">学历信息</el-button></div>
+      <div class="choice"><el-button type="success" icon="el-icon-s-promotion" plain @click="onClick('title')">职称信息</el-button></div>
+      <div class="choice"><el-button type="success" icon="el-icon-s-promotion" plain @click="onClick('departmentPerson')">部门人数</el-button></div>
+      <div class="choice"><el-button type="success" icon="el-icon-s-promotion" plain @click="onClick('wedlock')">婚姻状况</el-button></div>
     </div>
   </div>
 </template>
@@ -18,19 +20,21 @@ import {postRequest,getRequest} from "@/utils/api";
 export default {
   data(){
     return {
-      info:[]
+      info: {
+        items: [],
+        chartTitle: '',
+        chartSeries: '',
+        barColor:'',
+        labelColor: ''
+      },
     }
   },
   methods:{
     drawChart(){
-      let schoolInfo = this.$echarts.init(document.getElementById("school"));
-      let perCountInfo = this.$echarts.init(document.getElementById("perCount"));
-      let topDegreeInfo = this.$echarts.init(document.getElementById("topDegree"));
-      let majorInfo = this.$echarts.init(document.getElementById("major"));
-      let positionInfo = this.$echarts.init(document.getElementById("position"));
-      let wedlockInfo = this.$echarts.init(document.getElementById("wedlock"));
+      let pieChart = this.$echarts.init(document.getElementById("pie"));
+      let barChart = this.$echarts.init(document.getElementById("bar"));
 
-      let schoolOption = {
+      let pieOption = {
         color: [
           '#d5befd',
           '#f8fdaf',
@@ -43,8 +47,12 @@ export default {
           '#8dc1a9',
         ],
         title: {
-          text: '学校信息',
-          left: 'center'
+          text: this.info.chartTitle,
+          left: 'center',
+          textStyle:{
+            color: '#f18b87',
+            fontSize: 24,
+          }
         },
         //设置左边栏物品名称
         legend:{
@@ -55,7 +63,7 @@ export default {
           trigger: 'item',
         },
         series: [{
-          name: '人数',
+          name: this.info.chartSeries,
           type:'pie',
           //设置图表距离div左面边框60%，距离上面边框50%
           center:['65%', '50%'],
@@ -63,221 +71,92 @@ export default {
           label: {
             show: true,
             position: 'inner',
-            formatter: '{d}%'
+            formatter: '{d}%',
+            fontSize: 16,
           },
-          data: this.info.school
+          data: this.info.items,
+          radius: ['35%', '70%']
         }]
       }
-      let perCountOption = {
-        color: [
-          '#d5befd',
-          '#f8fdaf',
-          '#73efb4',
-          '#c5d9f3',
-          '#f18b87',
-          '#87CEEB',
-          '#9c9eff',
-          '#ffb5f8',
-          '#8dc1a9',
-        ],
+      let barOption = {
         title: {
-          text: '部门信息',
-          left: 'center'
+          text: this.info.chartTitle,
+          left: 'center',
+          textStyle:{
+            color: '#f18b87',
+            fontSize: 24,
+          }
         },
-        //设置左边栏物品名称
         legend:{
           orient: 'vertical',
           left: 'left'
         },
+        //鼠标触碰显示数据
         tooltip:{
-          trigger: 'item',
+          trigger: 'axis',
         },
-        series: [{
-          name: '人数',
-          type:'pie',
-          //设置图表距离div左面边框60%，距离上面边框50%
-          center:['65%', '50%'],
-          //设置鼠标触摸显示详细数据
-          label: {
-            show: true,
-            position: 'inner',
-            formatter: '{d}%'
-          },
-          data: this.info.perCount,
-          radius: ['40%', '70%'],
-        }]
-      }
-      let topDegreeOption = {
+        //设置柱状图颜色
         color: [
-          '#d5befd',
-          '#f8fdaf',
-          '#73efb4',
-          '#c5d9f3',
-          '#f18b87',
-          '#87CEEB',
-          '#9c9eff',
-          '#ffb5f8',
-          '#8dc1a9',
+            this.info.barColor
+          // '#8dc1a9', //'#65cbc8'
+          // '#87CEEB', //'#9c9eff'
+          // '#d5befd', //'#9c9eff'
+          // '#a5d951', //'#f18b87'
+          // '#85e8b9', //'#f18b87'
+          // '#c5d9f3', //'#87CEEB'
+          // '#aaacf3', //#eb87aa
         ],
-        title: {
-          text: '学历信息',
-          left: 'center'
+        xAxis: {
+          type:'category',
+          name: "分类",
+          nameTextStyle:{
+            color: '#c5d9f3',
+            fontStyle: 'italic',
+            fontSize:20,
+          }
         },
-        //设置左边栏物品名称
-        legend:{
-          orient: 'vertical',
-          left: 'left'
+        yAxis: {
+          type:'value',
+          name: this.info.chartSeries
         },
-        tooltip:{
-          trigger: 'item',
-        },
-        series: [{
-          name: '人数',
-          type:'pie',
-          //设置图表距离div左面边框60%，距离上面边框50%
-          center:['65%', '50%'],
-          //设置鼠标触摸显示详细数据
-          label: {
-            show: true,
-            position: 'inner',
-            formatter: '{d}%'
-          },
-          data: this.info.topDegree
-        }]
-      }
-      let majorOption = {
-        color: [
-          '#d5befd',
-          '#f8fdaf',
-          '#73efb4',
-          '#c5d9f3',
-          '#f18b87',
-          '#87CEEB',
-          '#9c9eff',
-          '#ffb5f8',
-          '#8dc1a9',
-        ],
-        title: {
-          text: '专业信息',
-          left: 'center'
-        },
-        //设置左边栏物品名称
-        legend:{
-          orient: 'vertical',
-          left: 'left'
-        },
-        tooltip:{
-          trigger: 'item',
-        },
-        series: [{
-          name: '人数',
-          type:'pie',
-          //设置图表距离div左面边框60%，距离上面边框50%
-          center:['65%', '50%'],
-          //设置鼠标触摸显示详细数据
-          label: {
-            show: true,
-            position: 'inner',
-            formatter: '{d}%'
-          },
-          data: this.info.major,
-          radius: ['40%', '70%'],
-        }]
-      }
-      let positionOption = {
-        color: [
-          '#d5befd',
-          '#f8fdaf',
-          '#73efb4',
-          '#c5d9f3',
-          '#f18b87',
-          '#87CEEB',
-          '#9c9eff',
-          '#ffb5f8',
-          '#8dc1a9',
-        ],
-        title: {
-          text: '职称信息',
-          left: 'center'
-        },
-        //设置左边栏物品名称
-        legend:{
-          orient: 'vertical',
-          left: 'left'
-        },
-        tooltip:{
-          trigger: 'item',
-        },
-        series: [{
-          name: '人数',
-          type:'pie',
-          //设置图表距离div左面边框60%，距离上面边框50%
-          center:['65%', '50%'],
-          //设置鼠标触摸显示详细数据
-          label: {
-            show: true,
-            position: 'inner',
-            formatter: '{d}%'
-          },
-          data: this.info.position,
-        }]
-      }
-      let wedlockOption = {
-        color: [
-          '#d5befd',
-          '#f8fdaf',
-          '#73efb4',
-          '#c5d9f3',
-          '#f18b87',
-          '#87CEEB',
-          '#9c9eff',
-          '#ffb5f8',
-          '#8dc1a9',
-        ],
-        title: {
-          text: '婚姻信息',
-          left: 'center'
-        },
-        //设置左边栏物品名称
-        legend:{
-          orient: 'vertical',
-          left: 'left'
-        },
-        tooltip:{
-          trigger: 'item',
-        },
-        series: [{
-          name: '人数',
-          type:'pie',
-          //设置图表距离div左面边框60%，距离上面边框50%
-          center:['65%', '50%'],
-          //设置鼠标触摸显示详细数据
-          label: {
-            show: true,
-            position: 'inner',
-            formatter: '{d}%'
-          },
-          data: this.info.wedlock,
-          radius: ['40%', '70%'],
-        }]
-      }
-
-      schoolInfo.setOption(schoolOption);
-      perCountInfo.setOption(perCountOption);
-      topDegreeInfo.setOption(topDegreeOption);
-      majorInfo.setOption(majorOption);
-      positionInfo.setOption(positionOption);
-      wedlockInfo.setOption(wedlockOption);
-
+        series: [
+            {
+              type: 'bar',
+              barMinHeight: 15,
+              name: this.info.chartSeries,
+              label: {
+                show: true,
+                position: 'top',
+                formatter: '{a}: {c}',
+                textStyle:{
+                  color: this.info.labelColor,
+                  fontSize: 14
+              }
+            },
+              //鼠标触碰显示数据
+              tooltip:{
+                trigger: 'item'
+              },
+              data: this.info.items
+          }
+        ]
+      };
+      pieChart.setOption(pieOption);
+      barChart.setOption(barOption);
     },
     async initData () {
-      await getRequest("/statistics/personnel/personnelInfo").then(res=>{
-        if (res) {
-          this.info = res;
-        }
-      });
+      await getRequest("/statistics/personnel/schoolInfo").then(res=>{
+        this.info = res;
+      })
       this.drawChart();
     },
+    onClick(url){
+      getRequest("/statistics/personnel/"+url).then(res=>{
+        this.info = res;
+        console.log(this.info)
+        this.drawChart();
+      })
+    }
   },
 
   mounted() {
@@ -288,12 +167,26 @@ export default {
 
 <style scoped>
 .dom1{
-  width: 360px;
-  height: 250px;
+  width: 820px;
+  height: 500px;
+  margin: 0 auto;
+}
+.dom2{
+  width: 620px;
+  height: 500px;
   margin: 0 auto;
 }
 .dom{
   display: flex;
-  height: 260px;
+  height: 510px;
+}
+.dom_choice{
+  height: 150px;
+  display: flex;
+}
+.choice{
+  width: 220px;
+  height: 120px;
+  margin: 0 auto;
 }
 </style>
