@@ -14,15 +14,19 @@ export default {
       content:''
     }
   },
+  computed:mapState([
+    'sessions',
+    'currentSession'
+  ]),
   methods: {
   	addMessage (e) {
   		if (e.ctrlKey && e.keyCode ===13 && this.content.length) {
         let msg = new Object();
-        msg.to = 'libai';
+        msg.to = this.currentSession.username;
         msg.content = this.content;
         this.$store.state.stomp.send('/ws/chat', {}, JSON.stringify(msg))
-  			// this.$store.commit('addMessage',this.content);
-  			// this.content='';
+  			this.$store.commit('addMessage',msg);
+  			this.content='';
   		}
   	}
   }
