@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from 'vuex'
+import { Notification } from 'element-ui';
 import {getRequest} from "@/utils/api";
 import SockJS from  'sockjs-client';
 import Stomp from 'stompjs';
@@ -21,7 +22,8 @@ const store =  new Vuex.Store({
         currentSession:null,
         currentHr:JSON.parse(window.sessionStorage.getItem("user")),
         filterKey:'',
-        stomp:null
+        stomp:null,
+        isDot:{}
     },
     mutations: {
         init_currentHr(state, hr){
@@ -31,6 +33,7 @@ const store =  new Vuex.Store({
             state.routes = data;
         },
         changeCurrentSession (state,currentSession) {
+            Vue.set(state.isDot,state.currentHr.username+'#'+currentSession.username, false);
             state.currentSession = currentSession;
         },
         addMessage (state,msg) {
@@ -64,6 +67,15 @@ const store =  new Vuex.Store({
             context.state.stomp.connect({},success=>{
                 context.state.stomp.subscribe('/user/queue/chat', msg=>{
                     let receiveMsg = JSON.parse(msg.body);
+                    // 没有选中聊天对象或者是没跟这个人聊天
+                    if (!context.state.currentSession || receiveMsg.from != context.state.currentSession.username) {
+                        Notification.info({
+                            title: '【'+receiveMsg.fromNickName+'】发来一条消息',
+                            message: receiveMsg.content.length>10?receiveMsg.content.substr(0,10):receiveMsg.content,
+                            position: 'bottom-right'
+                        });
+                        Vue.set(context.state.isDot,context.state.currentHr.username+'#'+receiveMsg.from, true);
+                    }
                     receiveMsg.notSelf = true;
                     receiveMsg.to = receiveMsg.from;
                     context.commit('addMessage', receiveMsg);
