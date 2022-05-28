@@ -38,7 +38,8 @@ export default {
         if (valid) {
           this.postKeyValueRequest('/doLogin', this.loginForm).then(resp=>{
             if (resp) {
-              // alert(JSON.stringify(resp))
+              // 初始化 currentHr
+              this.$store.commit('init_currentHr', resp.obj);
               window.sessionStorage.setItem("user", JSON.stringify(resp.obj));
               let path = this.$route.query.redirect;
 

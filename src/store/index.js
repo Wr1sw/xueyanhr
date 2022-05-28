@@ -24,6 +24,9 @@ const store =  new Vuex.Store({
         stomp:null
     },
     mutations: {
+        init_currentHr(state, hr){
+            state.currentHr = hr;
+        },
         initRoutes(state, data) {
             state.routes = data;
         },
@@ -45,11 +48,10 @@ const store =  new Vuex.Store({
         },
         INIT_DATA (state) {
             // 浏览器本地的聊天记录
-            // let data = localStorage.getItem('vue-chat-session');
-            // //console.log(data)
-            // if (data) {
-            //     state.sessions = JSON.parse(data);
-            // }
+            let data = localStorage.getItem('vue-chat-session');
+            if (data) {
+                state.sessions = JSON.parse(data);
+            }
         },
         INIT_HR(state, data) {
             state.hrs = data;
@@ -83,7 +85,7 @@ const store =  new Vuex.Store({
 store.watch(function (state) {
     return state.sessions
 },function (val) {
-    console.log('CHANGE: ', val);
+    // console.log('CHANGE: ', val);
     localStorage.setItem('vue-chat-session', JSON.stringify(val));
 },{
     deep:true/*这个貌似是开启watch监测的判断,官方说明也比较模糊*/
