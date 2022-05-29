@@ -66,17 +66,6 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <!-- <el-form-item label="民族" prop="nationid">
-        <el-select v-model="form.nationid" placeholder="请选择">
-          <el-option
-            v-for="item in nationList"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          >
-          </el-option>
-        </el-select>
-      </el-form-item> -->
 
 
       <el-form-item label="籍贯" prop="nativeplace">
@@ -91,12 +80,8 @@
       </el-form-item>
 
       <el-form-item label="最高学历" prop="tiptopdegree">
-        <!-- <el-input v-model="form.tiptopdegree"></el-input> -->
 
         <el-select v-model="form.tiptopdegree" placeholder="请选择">
-          <!-- <el-option v-for="item in tiptopdegreeList" :key="item" :label="item" :value="item.id">
-          </el-option> -->
-
           <el-option label="博士" value="博士"></el-option>
           <el-option label="硕士" value="硕士"></el-option>
           <el-option label="本科" value="本科"></el-option>

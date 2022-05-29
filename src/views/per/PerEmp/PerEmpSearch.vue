@@ -28,7 +28,7 @@
 
           >查询</el-button
         >
-        <el-button @click="addInfo" v-if="user==='Adv'">添加</el-button>
+        <el-button @click="addInfo" >添加</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -39,12 +39,11 @@
 import { getRequest } from "@/utils/api";
 export default {
   name: "PerEmpSearch",
-  props: ["searchForm","userType"],
+  props: ["searchForm"],
   data() {
     return {
       departmentList: [],
       form: this.searchForm,
-      user: this.userType,
     };
   },
   mounted() {

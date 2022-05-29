@@ -42,7 +42,7 @@
             </div>
           </el-popover>
 
-          <el-button type="primary" icon="el-icon-edit" size="mini" @click="edit(scope.row)" v-if="user === 'Adv'">编辑
+          <el-button type="primary" icon="el-icon-edit" size="mini" @click="edit(scope.row)" >编辑
           </el-button>
         </template>
       </el-table-column>
@@ -64,7 +64,7 @@ import { postRequest, getRequest } from "@/utils/api";
 
 export default {
   name: "EmpBasicInfo",
-  props: ["searchFrom", "userType"],
+  props: ["searchFrom"],
   data() {
     return {
       //  总数据
@@ -76,9 +76,8 @@ export default {
       // 个数选择器
       pageSizes: [1, 5, 8, 10],
       // 默认每页显示的条数
-      PageSize: 1,
+      PageSize: 10,
       form: this.searchFrom,
-      user: this.userType,
       URL: "/personnel/emp/",
     };
   },
@@ -89,25 +88,15 @@ export default {
     this.fetchdata();
   },
   methods: {
-    // setURL() {
-    //   if (this.user == "Adv") {
-    //     //高级用户
-    //     this.URL = "/employee/advanced/";
-    //   } else {
-    //     this.URL = "/employee/basic/";
-    //   }
-    // },
     //分页获取员工列表信息
     fetchdata() {
       getRequest(this.URL+ "?PageSize=" + this.PageSize + "&currentPage=" + this.currentPage).then((res) => {
-        // console.log("fetchdata", res)
         this.tableData = res.data;
         this.totalCount = res.total;
       });
     },
     //获取查询信息
     queryInfo() {
-      // console.log("查询出form",this.form)
       let name = (this.form.name === undefined) ? "" : this.form.name
       let gender = (this.form.gender === undefined) ? "" : this.form.gender
       let department = (this.form.department === undefined) ? "" : this.form.department

@@ -11,9 +11,9 @@
       <!-- 操作 -->
       <el-table-column fixed="right" label="操作" width="225px">
         <template slot-scope="scope">
-          <el-button type="primary" icon="el-icon-edit" size="mini" @click="editInfo(scope.row)" v-show="user === 'Adv'">编辑
+          <el-button type="primary" icon="el-icon-edit" size="mini" @click="editInfo(scope.row)">编辑
           </el-button>
-          <el-button type="danger" icon="el-icon-delete"  v-show="user === 'Adv'" circle @click="deleteInfo(scope.row)"></el-button>
+          <el-button type="danger" icon="el-icon-delete"  circle @click="deleteInfo(scope.row)"></el-button>
         </template>
 
       </el-table-column>
@@ -35,7 +35,7 @@ import { deleteRequest, getRequest } from "@/utils/api";
 
 export default {
   name: "EmpBasicInfo",
-  props: ["searchFrom", "userType"],
+  props: ["searchFrom"],
   data() {
     return {
       //  总数据
@@ -47,9 +47,8 @@ export default {
       // 个数选择器
       pageSizes: [1, 5, 8, 10],
       // 默认每页显示的条数
-      PageSize: 1,
+      PageSize: 10,
       form: this.searchFrom,
-      user: this.userType,
       URL: "/personnel/ec/",
     };
   },

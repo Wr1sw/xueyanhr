@@ -19,7 +19,7 @@
       <el-button round size="small" @click="clearInfo" class="clear">清空</el-button>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" @click="queryInfo" size="medium">查询</el-button>
-        <el-button @click="addInfo" v-if="user === 'Adv'">添加</el-button>
+        <el-button @click="addInfo" >添加</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -30,12 +30,11 @@
 import { getRequest } from "@/utils/api";
 export default {
   name: "PerEcSearch",
-  props: ["searchForm", "userType"],
+  props: ["searchForm"],
   data() {
     return {
       rpList: [],
       form: this.searchForm,
-      user: this.userType,
     };
   },
   mounted() {
