@@ -1,12 +1,13 @@
 <template>
   <el-dialog :title="!form.id ? '新增员工奖惩信息 ' : '修改员工奖惩信息'" :close-on-click-modal="false" :visible.sync="visible">
-    <el-form ref="form" :model="form" :rules="rules" label-width="80px" label-position="right">
+    <el-form ref="form" :model="form" :rules="rules" label-width="150px" label-position="right">
 
-      <p v-show="form.id">员工姓名：{{ form.ename }}</p>
+      <el-form-item v-show="form.id" label="员工姓名">
+        <el-input v-model="form.ename" disabled></el-input>
+      </el-form-item>
 
       <el-form-item v-show="!form.id" label="员工姓名" prop="eid">
-        <el-cascader v-model="form.eid" :props="{ emitPath: false }" :show-all-levels="false" :options="optionsData"
-         > 
+        <el-cascader v-model="form.eid" :props="{ emitPath: false }" :show-all-levels="false" :options="optionsData">
         </el-cascader>
       </el-form-item>
       <el-form-item label="奖惩类别" prop="ecType">
@@ -16,7 +17,6 @@
         </el-radio-group>
       </el-form-item>
 
-      <br />
       <el-form-item label="奖惩原因" prop="rid">
         <el-select v-model="form.rid" placeholder="请先选择奖/惩类别" @change="detailChange">
           <el-option v-for="item in rpList" :key="item.id" :label="item.detail" :value="item.id">
@@ -24,7 +24,11 @@
         </el-select>
       </el-form-item>
 
-      <span>奖惩金额:&nbsp;&nbsp;{{ form.result }}</span>
+      <el-form-item label="奖惩金额">
+        &nbsp;&nbsp;{{ form.result }}
+      </el-form-item>
+
+
       <el-form-item label="奖惩日期">
         <el-col :span="11">
           <el-form-item prop="ecdate">
@@ -36,7 +40,7 @@
       <br />
 
       奖惩备注：
-      <el-input type="textarea" placeholder="请输入内容" v-model="form.remark" maxlength="30" show-word-limit>
+      <el-input type="textarea" placeholder="请输入内容" v-model.trim="form.remark" maxlength="30" show-word-limit>
       </el-input>
     </el-form>
 
@@ -68,7 +72,9 @@ export default {
         rid: [
           { required: true, message: "请选择奖惩原因", trigger: "change" },
         ],
-
+        ecdate:[
+          { required: true, message: "请选择奖惩日期", trigger: "change" },
+        ]
       },
       form: {},
       URL: "/personnel/ec/",
@@ -82,10 +88,16 @@ export default {
         return item.id == val
       })[0].result;
     },
-    ecTypeChange(val) {
+    getRpList(val) {
       getRequest(this.URL + "ecType/?ecType=" + val).then((res) => {
         this.rpList = res.obj;
+
       })
+    },
+    ecTypeChange(val) {
+      this.getRpList(val);
+      this.form.rid = "";
+      this.form.result = "";
     },
     submitAddForm() {
       postRequest(this.URL, this.form).then((res) => {
@@ -135,15 +147,16 @@ export default {
       getRequest(this.URL + this.form.id)
         .then((res) => {
           this.form = res.obj;
-          this.ecTypeChange(this.form.ecType)
+          this.getRpList(this.form.ecType);// 初始化RPList表单
+          // this.ecTypeChange(this.form.ecType)
         });
     },
     // 设置 添加时 获取dep 和 emp 信息
     setAddEmpData() {
-            getRequest("/personnel/ec/depEmpList").then((res) => {
-                this.optionsData = res.obj;
-            });
-      },
+      getRequest("/personnel/ec/depEmpList").then((res) => {
+        this.optionsData = res.obj;
+      });
+    },
     // 编辑和弹出的初始化页面
     init(id) {
       this.form = {};

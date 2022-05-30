@@ -61,11 +61,13 @@
       </el-form-item>
       <br>
       <el-form-item label="调动原因">
-        <el-input type="textarea" v-model="form.reason" maxlength="30" show-word-limit placeholder="请输入内容"> </el-input>
+        <el-input type="textarea" v-model.trim="form.reason" maxlength="30" show-word-limit placeholder="请输入内容">
+        </el-input>
       </el-form-item>
 
       <el-form-item label="备注">
-        <el-input type="textarea" v-model="form.remark" maxlength="30" show-word-limit placeholder="请输入内容"> </el-input>
+        <el-input type="textarea" v-model.trim="form.remark" maxlength="30" show-word-limit placeholder="请输入内容">
+        </el-input>
       </el-form-item>
 
 
@@ -98,6 +100,9 @@ export default {
         eid: [
           { required: true, message: "请选择员工", trigger: "change" },
         ],
+        removedate: [
+          { required: true, message: "请选择日期", trigger: "change" },
+        ],
         // //单选
         // ecType: [
         //   { required: true, message: "请选择奖/惩", trigger: "change" },
@@ -125,7 +130,7 @@ export default {
       if (val !== undefined) { // 解决自动触发问题
         getRequest(this.URL + "/empId/" + val).then((response) => {
           //触发渲染 --只需set一个，后续即可自动渲染
-          this.$set(this.form,'beforedepName', response.obj.beforedepName)
+          this.$set(this.form, 'beforedepName', response.obj.beforedepName)
 
           // this.form.beforedepName = response.obj.beforedepName;
           this.form.beforejobName = response.obj.beforejobName;
@@ -175,24 +180,25 @@ export default {
     },
     //提交表单：
     submitForm(subForm) {
-      if (this.form.afterdepid == null && this.form.afterjobid == null && this.form.afterposid == null) {
-        return false;
-      } else {
-        this.$refs[subForm].validate(
-          (valid) => {
-            if (valid) {
-              if (this.form.id) {
-                this.submitEditForm();
-              } else {
-                this.submitAddForm();
-              }
-            } else {
+
+      this.$refs[subForm].validate(
+        (valid) => {
+          if (valid) {
+            if (this.form.afterdepid == null && this.form.afterjobid == null && this.form.afterposid == null) {
               return false;
             }
-          });
+            if (this.form.id) {
+              this.submitEditForm();
+            } else {
+              this.submitAddForm();
+            }
+          } else {
+            return false;
+          }
+        });
 
 
-      }
+
     },
     editEmpInfo() {
       // //根据ID获取数据信息 

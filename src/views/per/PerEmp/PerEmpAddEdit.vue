@@ -1,8 +1,20 @@
 <template>
   <el-dialog :title="!form.id ? '新增 ' : '修改'" :close-on-click-modal="false" :visible.sync="visible">
     <el-form ref="form" :model="form" :rules="rules" label-width="80px" label-position="right">
+
+      <el-descriptions v-show="form.id" title="员工基本信息" :column="1">
+        <el-descriptions-item label="备注" :span="2">
+          <el-tag size="small">若需要修改以下信息，请到员工调动模块</el-tag>
+        </el-descriptions-item>
+      </el-descriptions>
+      <el-descriptions v-show="form.id" :column="3">
+        <el-descriptions-item label="所属部门">{{ depName }}</el-descriptions-item>
+        <el-descriptions-item label="职称">{{ jobName }}</el-descriptions-item>
+        <el-descriptions-item label="职位">{{ posName }}</el-descriptions-item>
+      </el-descriptions>
+      <br  v-show="form.id">
       <el-form-item label="姓名" prop="name">
-        <el-input v-model="form.name"></el-input>
+        <el-input v-model.trim="form.name"></el-input>
       </el-form-item>
 
       <el-form-item label="性别" prop="gender">
@@ -25,25 +37,30 @@
       <el-form-item label="电话号码" prop="phone">
         <el-input v-model="form.phone"></el-input>
       </el-form-item>
-
-      <el-form-item label="电子邮件" prop="email">
-        <el-input v-model="form.email"></el-input>
+      <el-form-item label="在职状态" prop="workstate">
+        <el-radio-group v-model="form.workstate">
+          <el-radio label="在职"></el-radio>
+          <el-radio label="离职"></el-radio>
+        </el-radio-group>
       </el-form-item>
-      <el-form-item label="所属部门" prop="departmentid">
+
+
+
+      <el-form-item v-show="!form.id" label="所属部门" prop="departmentid">
         <el-select v-model="form.departmentid" placeholder="请选择">
           <el-option v-for="item in departmentList" :key="item.id" :label="item.name" :value="item.id">
           </el-option>
         </el-select>
       </el-form-item>
 
-      <el-form-item label="职称" prop="joblevelid">
+      <el-form-item v-show="!form.id" label="职称" prop="joblevelid">
         <el-select v-model="form.joblevelid" placeholder="请选择">
           <el-option v-for="item in jobLevelList" :key="item.id" :label="item.name" :value="item.id">
           </el-option>
         </el-select>
       </el-form-item>
 
-      <el-form-item label="职位" prop="posid">
+      <el-form-item v-show="!form.id" label="职位" prop="posid">
         <el-select v-model="form.posid" placeholder="请选择">
           <el-option v-for="item in positionList" :key="item.id" :label="item.name" :value="item.id">
           </el-option>
@@ -51,14 +68,12 @@
       </el-form-item>
 
 
-      <el-form-item label="在职状态" prop="workstate">
-        <el-radio-group v-model="form.workstate">
-          <el-radio label="在职"></el-radio>
-          <el-radio label="离职"></el-radio>
-        </el-radio-group>
+
+      <el-form-item label="电子邮件" prop="email">
+        <el-input v-model.trim="form.email"></el-input>
       </el-form-item>
       <el-form-item label="住址" prop="address">
-        <el-input v-model="form.address"></el-input>
+        <el-input v-model.trim="form.address"></el-input>
       </el-form-item>
       <el-form-item label="民族" prop="nationid">
         <el-select v-model="form.nationid" placeholder="请选择">
@@ -69,7 +84,7 @@
 
 
       <el-form-item label="籍贯" prop="nativeplace">
-        <el-input v-model="form.nativeplace"></el-input>
+        <el-input v-model.trim="form.nativeplace"></el-input>
       </el-form-item>
 
       <el-form-item label="政治面貌" prop="politicid">
@@ -94,21 +109,22 @@
 
       </el-form-item>
       <el-form-item label="所学专业" prop="specialty">
-        <el-input v-model="form.specialty"></el-input>
+        <el-input v-model.trim="form.specialty"></el-input>
       </el-form-item>
 
       <el-form-item label="毕业学校" prop="school">
-        <el-input v-model="form.school"></el-input>
+        <el-input v-model.trim="form.school"></el-input>
       </el-form-item>
       <el-form-item label="聘用形式" prop="engageform">
-        <el-input v-model="form.engageform"></el-input>
+        <el-input v-model.trim="form.engageform"></el-input>
       </el-form-item>
       <el-form-item label="合同期限" prop="contractterm">
-        <el-input v-model="form.contractterm"></el-input>
+        <el-input v-model.trim.number="form.contractterm"></el-input>
       </el-form-item>
       <el-form-item label="工龄" prop="workage">
-        <el-input v-model="form.workage"></el-input>
+        <el-input v-model.trim.number="form.workage"></el-input>
       </el-form-item>
+      <br>
 
       <el-form-item label="出生日期" required>
         <el-col :span="11">
@@ -209,7 +225,7 @@ export default {
       rules: {
         name: [
           { required: true, message: "请输入员工名字", trigger: "blur" },
-          { min: 3, max: 10, message: "长度为2到10", trigger: "blur" },
+          { min: 2, max: 10, message: "长度为2到10", trigger: "blur" },
         ],
         //单选
         gender: [
@@ -228,15 +244,15 @@ export default {
           { validator: rulesEmail, trigger: "blur" },
         ],
         //下拉框
-        departmentid: [
-          { required: true, message: "请选择所属部门", trigger: "change" },
-        ],
-        joblevelid: [
-          { required: true, message: "请选择所属职称", trigger: "change" },
-        ],
-        posid: [
-          { required: true, message: "请选择所属职位", trigger: "change" },
-        ],
+        // departmentid: [
+        //   { required: true, message: "请选择所属部门", trigger: "change" },
+        // ],
+        // joblevelid: [
+        //   { required: true, message: "请选择所属职称", trigger: "change" },
+        // ],
+        // posid: [
+        //   { required: true, message: "请选择所属职位", trigger: "change" },
+        // ],
         // workstate: [
         //   { required: true, message: "请选择工作状态", trigger: "blur" },
         // ],
@@ -261,6 +277,9 @@ export default {
         ],
       },
       URL: "/personnel/emp/",
+      posName: "",
+      jobName: "",
+      depName: "",
     };
   },
   mounted() {
@@ -323,6 +342,9 @@ export default {
       getRequest(this.URL + this.form.id)
         .then((res) => {
           this.form = res.obj;
+          this.depName = res.obj.department.name;
+          this.jobName = res.obj.jOblevel.name;
+          this.posName = res.obj.position.name;
         });
     },
     // 编辑和弹出的初始化页面
