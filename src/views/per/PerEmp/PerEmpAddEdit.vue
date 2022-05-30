@@ -317,9 +317,6 @@ export default {
         this.positionList = data.positionList[0];
         this.politicsstatusList = data.politicsstatusMapperList[0];
       });
-
-
-
     },
     editEmpInfo() {
       //根据ID获取数据信息 

@@ -155,7 +155,7 @@ export default {
     },
     cancleForm() {
       //清除数据
-      this.$refs.empInfo.clearInfo();
+      // this.$refs.empInfo.clearInfo();
       this.visible = false;
     },
   },
