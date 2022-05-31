@@ -111,8 +111,8 @@ export default {
       trainData:[],
       trainDataItem:{
         name:'',
-        // beginDate:'',
-        // endDate:'',
+        beginDate:'',
+        endDate:'',
         content:'',
         id:0
       },
@@ -150,7 +150,6 @@ export default {
     },
     //是否显示分页组件
     ShowPager(length){
-      console.log(length)
       this.totalRows = length;
       this.isShowPager = length <= 7;
     },
@@ -178,16 +177,10 @@ export default {
     },
     //点击编辑按钮
     trainDataHandleEdit(row){
-      console.log(row.id)
       let url = "/personnel/train/selectTrainByPrimaryKey?id="+row.id
       getRequest(url).then(res=>{
-        console.log("=>>>>")
-        console.log(res.obj)
         this.trainDataItem = res.obj;
-        console.log("<<<<<=>>>>>>>>>")
-        console.log(this.trainDataItem)
         this.trainDataDialogFormVisible = true;
-        // console.log(this.trainDataItem)
       })
     },
     //点击添加一条培训信息
@@ -217,32 +210,21 @@ export default {
     //插入一条记录
     insertATrainData(){
       let url = "/personnel/train/insertATrain"
-      let data = this.trainDataItem;
-      console.log("<======")
-      console.log(this.trainDataItem)
-      console.log(data)
-      this.trainDataItem = {};
-      this.$refs['trainDataForm'].resetFields();
-      // postRequest(url,data).then(res=>{
-      //   let result = res.ok
-      //   if(result === "success"){
-      //     this.showMessage("添加成功", true)
-      //   }
-      //   this.getTrainData();
-      // })
+      postRequest(url,this.trainDataItem).then(res=>{
+        let result = res.ok
+        if(result === "success"){
+          this.showMessage("添加成功", true)
+        }
+        this.getTrainData();
+      })
     },
     //更新一条记录
     updateATrainData(){
       let url = "/personnel/train/updateTrainByPrimaryKeySelective"
-      let data = this.trainDataItem;
-      // this.trainDataItem = {}
-      console.log(data)
-      // this.$refs['trainDataForm'].resetFields();
-      this.clearData();
-      // postRequest(url,data).then(res=>{
-      //   this.getTrainData();
-      //   this.showMessage("更新成功", true)
-      // })
+      postRequest(url,this.trainDataItem).then(res=>{
+        this.getTrainData();
+        this.showMessage("更新成功", true)
+      })
     },
     //删除一条记录
     deleteATrainData(id){
@@ -257,14 +239,6 @@ export default {
       this.addTrainDataStatus = false
       this.trainDataItem = {}
       this.$refs['trainDataForm'].resetFields();
-    },
-
-    clearData(){
-      this.trainDataItem.id = null;
-      this.trainDataItem.beginDate = null;
-      this.trainDataItem.endDate = null;
-      this.trainDataItem.content = null;
-      this.trainDataItem.name = null;
     },
 
     /******************************* 其它函数，公共操作 ***********************************/

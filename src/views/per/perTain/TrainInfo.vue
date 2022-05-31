@@ -244,14 +244,12 @@ export default {
     // 改变分页时
     handleCurrentChange(val){
       let url =  this.strLook()+"currentPage="+val
-      console.log(url)
       getRequest(url).then(res=>{
         this.trainInfo = res.obj;
       })
     },
     //是否显示分页组件
     ShowPager(length){
-      console.log(length)
       this.totalRows = length;
       this.isShowPager = length <= 7;
     },
@@ -265,7 +263,6 @@ export default {
       this.getSearchNums();
       postRequest(url).then(res=>{
         this.trainInfo = res.obj;
-        console.log(res.obj);
       })
     },
 
@@ -287,7 +284,6 @@ export default {
         this.getTrainInfoNums(countUrl);
         getRequest(url).then(res=>{
           this.trainInfo = res.obj;
-          console.log(res.obj)
         })
     },
     //获取指定url培训记录总条数， 牵涉分页
@@ -346,7 +342,6 @@ export default {
     //挑选员工
     selectWorker(val){
       this.multipleSelection = val
-      console.log(val)
     },
     //提交表单
     submitEmployeeTrain(){
