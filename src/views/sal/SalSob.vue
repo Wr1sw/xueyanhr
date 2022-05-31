@@ -10,11 +10,11 @@
   <div style="margin-top: 10px">
     <el-table :data="salaries" border stripe>
       <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column width="120" prop="name" label="账套名称"></el-table-column>
+      <el-table-column width="180" prop="standardName" label="账套名称"></el-table-column>
+      <el-table-column width="220" prop="standardId" label="账套标准编号"></el-table-column>
       <el-table-column width="80" prop="basicSalary" label="基本工资"></el-table-column>
       <el-table-column width="80" prop="trafficSalary" label="交通补助"></el-table-column>
       <el-table-column width="80" prop="lunchSalary" label="午餐补助"></el-table-column>
-      <el-table-column width="80" prop="bonus" label="奖金"></el-table-column>
       <el-table-column width="100" prop="createDate" label="启用时间"></el-table-column>
       <el-table-column label="养老金" align="center">
         <el-table-column width="70" prop="pensionPer" label="比率"></el-table-column>
@@ -25,9 +25,10 @@
         <el-table-column width="70" prop="medicalBase" label="基数"></el-table-column>
       </el-table-column>
       <el-table-column label="公积金" align="center">
-        <el-table-column width="70" prop="accumulationFundPer" label="比率"></el-table-column>
-        <el-table-column width="70" prop="accumulationFundBase" label="基数"></el-table-column>
+        <el-table-column width="70" prop="accumulationfundPer" label="比率"></el-table-column>
+        <el-table-column width="70" prop="accumulationfundBase" label="基数"></el-table-column>
       </el-table-column>
+      <el-table-column width="80" prop="designer" label="制定人"></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button @click="showEditSalaryView(scope.row)">编辑</el-button>
@@ -60,6 +61,7 @@ export default {
   name: "SalSob",
   data() {
     return {
+      user:JSON.parse(window.sessionStorage.getItem("user")),
       salaries: [],
       dialogVisible: false,
       dialogTitle:'添加工资账套',
@@ -67,28 +69,29 @@ export default {
           '基本工资',
           '交通补助',
           '午餐补助',
-          '奖金',
           '养老金比率',
           '养老金基数',
           '医疗保险比率',
           '医疗保险基数',
           '公积金比率',
           '公积金基数',
-          '账套名称'
+          '账套名称',
+          '制定人'
       ],
       activeItemIndex:0,
       salary:{
         basicSalary:0,
         trafficSalary:0,
         lunchSalary:0,
-        bonus:0,
         pensionPer:0,
         pensionBase:0,
         medicalPer:0,
         medicalBase:0,
-        accumulationFundPer:0,
-        accumulationFundBase:0,
-        name:''
+        accumulationfundPer:0,
+        accumulationfundBase:0,
+        standardName:'',
+        designer:'',
+        changer:''
       }
     }
   },
@@ -108,14 +111,14 @@ export default {
         basicSalary:0,
         trafficSalary:0,
         lunchSalary:0,
-        bonus:0,
         pensionPer:0,
         pensionBase:0,
         medicalPer:0,
         medicalBase:0,
-        accumulationFundPer:0,
-        accumulationFundBase:0,
-        name:''
+        accumulationfundPer:0,
+        accumulationfundBase:0,
+        standardName:'',
+        designer:''
       }
       this.activeItemIndex = 0;
       this.dialogTitle = '添加工资账套';
@@ -124,7 +127,11 @@ export default {
     nextStep() {
       if (this.activeItemIndex == 10) {
         // id存在，更新操作
-        if (this.salary.id) {
+        if (this.salary.sdtId) {
+          // 默认更改者为登录用户
+          // 默认登记者为登录用户
+          this.salary.register = this.user.name;
+          this.salary.changer = this.user.name;
           this.putRequest("/salary/sob/", this.salary).then(resp=>{
             if (resp) {
               this.initSalaries();
@@ -132,6 +139,8 @@ export default {
             }
           })
         } else {
+          // 默认登记者为登录用户
+          this.salary.register = this.user.name;
           this.postRequest("/salary/sob/", this.salary).then(resp=>{
             if (resp) {
               this.initSalaries();
@@ -157,11 +166,11 @@ export default {
       this.activeItemIndex--;
     },
     deleteSalary(data) {
-      this.$confirm('确认删除【 '+data.name+'】账套','提示', {
+      this.$confirm('确认删除【 '+data.standardName+'】账套','提示', {
         cancelButtonText:'取消',
         confirmButtonText:'确认'
       }).then(()=>{
-        this.deleteRequest("/salary/sob/"+data.id).then(resp=>{
+        this.deleteRequest("/salary/sob/"+data.sdtId).then(resp=>{
           if (resp) {
             this.initSalaries();
           }
@@ -182,10 +191,11 @@ export default {
       this.salary.pensionPer = data.pensionPer;
       this.salary.pensionBase = data.pensionBase;
       this.salary.medicalPer = data.medicalPer;
-      this.salary.accumulationFundPer = data.accumulationFundPer;
-      this.salary.accumulationFundBase = data.accumulationFundBase;
-      this.salary.name = data.name;
-      this.salary.id = data.id;
+      this.salary.accumulationfundPer = data.accumulationfundPer;
+      this.salary.accumulationfundBase = data.accumulationfundBase;
+      this.salary.standardName = data.standardName;
+      this.salary.designer = data.designer;
+      this.salary.sdtId = data.sdtId;
     }
   }
 }
