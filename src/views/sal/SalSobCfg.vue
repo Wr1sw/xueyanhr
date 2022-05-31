@@ -7,58 +7,54 @@
       <el-table-column prop="workid" label="工号"  width="120" align="left"></el-table-column>
       <el-table-column prop="email" label="电子邮件"  width="200" align="left"></el-table-column>
       <el-table-column prop="phone" label="电话号码"  width="120" align="left"></el-table-column>
-      <el-table-column label="所属部门" align="center">
+      <el-table-column label="所属账套" align="center">
         <template slot-scope="scope">
-          <el-tooltip placement="right" v-if="scope.row.salary">
+          <el-tooltip placement="right" v-if="scope.row.salaryStandardDetails">
             <div slot="content">
               <table>
                 <tr>
                   <td>基本工资</td>
-                  <td>{{scope.row.salary.basicSalary}}</td>
+                  <td>{{scope.row.salaryStandardDetails.basicSalary}}</td>
                 </tr>
                 <tr>
                   <td>交通补助</td>
-                  <td>{{scope.row.salary.trafficSalary}}</td>
+                  <td>{{scope.row.salaryStandardDetails.trafficSalary}}</td>
                 </tr>
                 <tr>
                   <td>午餐补助</td>
-                  <td>{{scope.row.salary.lunchSalary}}</td>
-                </tr>
-                <tr>
-                  <td>奖金</td>
-                  <td>{{scope.row.salary.bonus}}</td>
+                  <td>{{scope.row.salaryStandardDetails.lunchSalary}}</td>
                 </tr>
                 <tr>
                   <td>养老金比率</td>
-                  <td>{{scope.row.salary.pensionPer}}</td>
+                  <td>{{scope.row.salaryStandardDetails.pensionPer}}</td>
                 </tr>
                 <tr>
                   <td>养老金基数</td>
-                  <td>{{scope.row.salary.pensionBase}}</td>
+                  <td>{{scope.row.salaryStandardDetails.pensionBase}}</td>
                 </tr>
                 <tr>
                   <td>医疗保险比率</td>
-                  <td>{{scope.row.salary.medicalPer}}</td>
+                  <td>{{scope.row.salaryStandardDetails.medicalPer}}</td>
                 </tr>
                 <tr>
                   <td>医疗保险基数</td>
-                  <td>{{scope.row.salary.medicalBase}}</td>
+                  <td>{{scope.row.salaryStandardDetails.medicalBase}}</td>
                 </tr>
                 <tr>
                   <td>公积金比率</td>
-                  <td>{{scope.row.salary.accumulationFundPer}}</td>
+                  <td>{{scope.row.salaryStandardDetails.accumulationFundPer}}</td>
                 </tr>
                 <tr>
                   <td>公积金基数</td>
-                  <td>{{scope.row.salary.accumulationFundBase}}</td>
+                  <td>{{scope.row.salaryStandardDetails.accumulationFundBase}}</td>
                 </tr>
                 <tr>
                   <td>启用时间</td>
-                  <td>{{scope.row.salary.createDate}}</td>
+                  <td>{{scope.row.salaryStandardDetails.createDate}}</td>
                 </tr>
               </table>
             </div>
-              <el-tag>{{scope.row.salary.name}}</el-tag>
+              <el-tag>{{scope.row.salaryStandardDetails.standardName}}</el-tag>
           </el-tooltip>
           <el-tag v-else>尚未设置</el-tag>
         </template>
@@ -68,7 +64,7 @@
           <el-popover
               placement="bottom"
               title="修改工资账套"
-              @show="showPop(scope.row.salary)"
+              @show="showPop(scope.row.salaryStandardDetails)"
               @hide="hidePop(scope.row)"
               width="200"
               trigger="click">
@@ -76,9 +72,9 @@
               <el-select v-model="curSalary" placeholder="请选择" size="mini">
                 <el-option
                     v-for="item in salaries"
-                    :key="item.id"
-                    :label="item.name"
-                    :value="item.id">
+                    :key="item.ssdId"
+                    :label="item.standardName"
+                    :value="item.ssdId">
                 </el-option>
               </el-select>
             </div>
@@ -136,19 +132,23 @@ export default {
     },
     showPop(data) {
       if (data) {
-        this.curSalary = data.id;
+        this.curSalary = data.sdtId;
+        console.log(this.curSalary)
       } else {
         this.curSalary = null;
       }
       this.tempSalary = this.curSalary;
     },
     hidePop(data) {
-      if (this.curSalary && (this.curSalary != this.tempSalary)) {
+      if (this.curSalary && (this.curSalary !== this.tempSalary)) {
+        console.log("=>>")
+        console.log(this.curSalary)
+        console.log("=>>")
+        console.log(this.tempSalary)
         this.putRequest('/salary/sobcfg/?eid='+data.id+'&sid='+this.curSalary).then(resp=>{
           if (resp) {
             // refresh data
             this.initEmps();
-
           }
         })
       }
