@@ -1,7 +1,7 @@
 let proxyObj = {};
 proxyObj['/ws'] = {
   ws: false,
-  target: "ws://localhost:15005"
+  target: "http://localhost:15005"
 };
 proxyObj['/'] = {
   ws: false,

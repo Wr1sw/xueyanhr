@@ -17,9 +17,13 @@
               </el-form-item>
               <el-form-item prop="password">
                 <el-input type="password" v-model="accountLoginForm.password" auto-complete="off" placeholder="请输入密码"
-                  suffix-icon="el-icon-lock" @keydown.enter.native="submitAccountLogin"></el-input>
+                  suffix-icon="el-icon-lock"></el-input>
               </el-form-item>
-
+              <el-form-item prop="code">
+                <el-input type="text" v-model="accountLoginForm.code" auto-complete="off" placeholder="点击图片更换验证码"
+                          suffix-icon="el-icon-lock" @keydown.enter.native="submitAccountLogin" style="width: 320px"></el-input>
+                <img :src="vcUrl" @click="updateVerifyCode" alt="">
+              </el-form-item>
               <el-form-item>
                 <el-checkbox class="loginRemember" v-model="checked"></el-checkbox>
                 <el-button type="primary" class="loginButton" @click="submitAccountLogin">登录</el-button>
@@ -152,9 +156,11 @@ export default {
       }
     };
     return {
+      vcUrl: '/verifyCode?date=' + new Date(),
       accountLoginForm: {
-        // username: 'admin',
-        // password: '123'
+        username: 'admin',
+        password: '123',
+        code:''
       },
       phoneLoginForm: {
         phone: "18990510820",
@@ -173,6 +179,7 @@ export default {
       rules: {
         username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
         password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+        code:     [{ required: true, message: '请输入验证码', trigger: 'blur'}],
         phone: [{ required: true, validator: checkPhone, trigger: 'blur' }],
         phoneCode: [{ required: true, message: "请输入验证码", trigger: 'blur' }],
         email: [{ required: true, validator: checkEmail, trigger: 'blur' }],
@@ -183,6 +190,9 @@ export default {
     }
   },
   methods: {
+    updateVerifyCode() {
+      this.vcUrl = '/verifyCode?time=' + new Date();
+    },
     // 通用-- 验证通过后设置用户信息，路由
     setUserInfo(resp) {
       // 初始化 currentHr
@@ -198,6 +208,9 @@ export default {
           this.postKeyValueRequest('/doLogin', this.accountLoginForm).then(resp => {
             if (resp) {
               this.setUserInfo(resp); // 设置用户、路由信息
+            } else {
+              // 自动刷新验证码
+              this.vcUrl = '/verifyCode?time=' + new Date();
             }
           })
         } else {
@@ -475,7 +488,10 @@ login_panle_form {
   /* background-color: #bdb8b84d; */
   width: 90%;
 }
-
+.el-form-item__content {
+  display: flex;
+  align-items: center;
+}
 
 
 /* .loginContainer { */
