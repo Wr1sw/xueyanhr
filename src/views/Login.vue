@@ -178,7 +178,7 @@ export default {
         email: [{ required: true, validator: checkEmail, trigger: 'blur' }],
         emailCode: [{ required: true, message: "请输入验证码", trigger: 'blur' }]
       },
-      activeName: 'phoneLogin',
+      activeName: 'accountLogin',
 
     }
   },

@@ -243,16 +243,16 @@ export default {
           { required: true, message: "邮箱不能为空", trigger: "blur" },
           { validator: rulesEmail, trigger: "blur" },
         ],
-        //下拉框
-        // departmentid: [
-        //   { required: true, message: "请选择所属部门", trigger: "change" },
-        // ],
+        // 下拉框
+        departmentid: [
+          { required: true, message: "请选择所属部门", trigger: "change" },
+        ],
         // joblevelid: [
         //   { required: true, message: "请选择所属职称", trigger: "change" },
         // ],
-        // posid: [
-        //   { required: true, message: "请选择所属职位", trigger: "change" },
-        // ],
+        posid: [
+          { required: true, message: "请选择所属职位", trigger: "change" },
+        ],
         // workstate: [
         //   { required: true, message: "请选择工作状态", trigger: "blur" },
         // ],
@@ -341,6 +341,7 @@ export default {
       //根据ID获取数据信息 
       getRequest(this.URL + this.form.id)
         .then((res) => {
+          console.log("res",res)
           this.form = res.obj;
           this.depName = res.obj.department.name;
           this.jobName = res.obj.jOblevel.name;
