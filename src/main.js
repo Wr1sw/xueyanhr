@@ -4,6 +4,14 @@ import router from './router'
 import store from './store'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import videojs from 'video.js';
+// import VideoPlayer from 'vue-video-player';
+// require('video.js/dist/video-js.css');
+// require('vue-video-player/node_modules/video.js/dist/video-js.css');
+// require('vue-video-player/src/custom-theme.css');
+// import 'video.js/dist/video-js.css';
+// import 'vue-video-player/src/custom-theme.css';
+
 import {initMenu} from "@/utils/menus";
 import 'font-awesome/css/font-awesome.min.css'
 import {postKeyValueRequest} from "@/utils/api";
@@ -13,15 +21,23 @@ import {putRequest} from "@/utils/api";
 import {deleteRequest} from "@/utils/api";
 import echarts from "echarts";
 
+import VueCoreVideoPlayer from 'vue-core-video-player'
+
+Vue.use(VueCoreVideoPlayer, {
+  lang: 'zh-CN'
+})
+
+
+
 Vue.prototype.postRequest = postRequest;
 Vue.prototype.postKeyValueRequest = postKeyValueRequest;
 Vue.prototype.getRequest = getRequest;
 Vue.prototype.putRequest = putRequest;
 Vue.prototype.deleteRequest = deleteRequest;
 Vue.prototype.$echarts = echarts;
-
 Vue.config.productionTip = false
 Vue.use(ElementUI);
+// Vue.use(VideoPlayer);
 
 router.beforeEach((to, from, next) => {
   if (to.path == '/') {
