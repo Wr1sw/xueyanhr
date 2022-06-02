@@ -1,7 +1,7 @@
 <template>
     <div>
-        <el-upload class="upload" drag action="#" multiple :on-change="handleChange" :before-upload="beforeAvatarUpload"
-            :http-request="httpRequest">
+        <el-upload class="upload" drag action="#" multiple :http-request="httpRequest">
+            <!-- :on-change="handleChange" :before-upload="beforeAvatarUpload" -->
             <i class="el-icon-upload"></i>
             <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
             <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
@@ -10,15 +10,17 @@
 </template>
 
 <script>
-import { getRequest, postRequest } from '@/utils/api';
+import { putRequest, postRequest } from '@/utils/api';
 export default {
     name: "upload",
+    props: ['id'],
     data() {
         return {
-
+            imgUrl: "http://8.142.134.205:8888/group1/"
         }
     },
     mounted() {
+        console.log(this.id);
         // let params = {
         //     username: "1335098123@qq.com",
         //     password: "wsywsywsy0408123"
@@ -46,17 +48,37 @@ export default {
         httpRequest(data) {
             console.log("data", data);
             var formdata = new FormData();
-            formdata.append("smfile", data.file);
-            var headers = { 'Authorization': 'cMZkqPKLXfroLwwGBqpYtunwkKm6BvUp' }
+            formdata.append("file", data.file);
+            //    
+            postRequest("/system/hr/getImgUrl", formdata).then(
+                res => {
+                    console.log("11", res)
+                    if (res.status == 200) { //上传成功
+                        let url = this.imgUrl + res.obj;
+                        this.updateHr(url);// 更新数据库
+                    }
 
-            postRequest("userface", formdata, headers).then(
-                res => console.log("11", res.data)
+                }
             ).catch(
                 err => console.log("err", err)
             );
             // this.$refs.upload.clearFiles(); //清空
+        },
+        updateHr(val) {
+            let updateruleForm = {
+                userface: val,
+                id: this.id,
+                enabled: true
+            };
+            putRequest("/system/hr/", updateruleForm).then((res) => {
+                if (res.status == 200) { //修改成功
+                    this.$emit('refreshList')
+                }
+            })
         }
+
     }
+
 }
 </script>
 

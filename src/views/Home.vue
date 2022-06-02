@@ -6,10 +6,10 @@
         <img alt="" class="logoimg" src="https://www.gin-vue-admin.com/img/logo.png">
         <div class="tit-text" style="color: rgb(255, 255, 255);">Xue-Yi-An</div>
       </div>
-      <el-menu default-active="2" class="menu" background-color="rgb(25, 26, 35)" text-color="#FFFFFF"
-         router unique-opened>
-         <!-- " -->
-        <el-submenu :index="index + ''" v-for="(item, index) in routes" v-if="!item.hidden" :key="index" >
+      <el-menu default-active="2" class="menu" background-color="rgb(25, 26, 35)" text-color="#FFFFFF" router
+        unique-opened>
+        <!-- " -->
+        <el-submenu :index="index + ''" v-for="(item, index) in routes" v-if="!item.hidden" :key="index">
           <template slot="title">
             <i :class="item.iconCls" class="iconCls"></i>
             <span class="RouteName">{{ item.name }}</span>
@@ -48,7 +48,7 @@
               <el-button icon="el-icon-bell" type="text" class="goChat" size="normal" @click="goChat"></el-button>
               <el-dropdown class="userInfo" @command="commandHandler">
                 <span class="el-dropdown-link">
-                  {{ user.name }}<i><img :src="user.userface" alt=""></i>
+                  {{ hr.name }}<i><img :src="hr.userface" alt=""></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item command="userinfo">个人中心</el-dropdown-item>
@@ -84,6 +84,7 @@
 </template>
 
 <script>
+import { getRequest } from '@/utils/api'
 import card from "./../components/index/card.vue"
 export default {
   name: "Home",
@@ -92,7 +93,8 @@ export default {
   },
   data() {
     return {
-      user: JSON.parse(window.sessionStorage.getItem("user"))
+      user: JSON.parse(window.sessionStorage.getItem("user")),
+      hr: {},
     }
   },
   computed: {
@@ -102,6 +104,11 @@ export default {
       // console.log(this.$route);
       return this.$store.state.routes;
     }
+  },
+  mounted(){
+    console.log("user",this.user);
+    this.hr.name = this.user.name;
+    this.hr.userface = this.user.userface;
   },
   methods: {
     goChat() {
@@ -130,6 +137,20 @@ export default {
       if (cmd == 'userinfo') {
         this.$router.push("/adminCenter");
       }
+    }
+  },
+  watch: {
+    "$route": {
+      handler(route,old) {
+        console.log("route",route,old);
+        if (old.name === "个人中心") { // 监听路由变化
+          getRequest("/system/hr/" + this.user.id).then(res => {
+            console.log("res123123", res)
+            this.hr = res.obj;
+          })
+        }
+      },
+      deep: true
     }
   }
 }

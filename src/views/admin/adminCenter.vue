@@ -73,7 +73,7 @@
 
         <el-drawer title="点击上传头像" :visible.sync="drawer">
 
-            <myUpload></myUpload>
+            <myUpload @refreshList="refreshList" :id="id"></myUpload>
         </el-drawer>
 
     </div>
@@ -131,6 +131,7 @@ export default {
         return {
             hover: false,
             drawer: false,
+            id: "",//管理员id
             // labelPosition: 'right',
             ruleForm: {},
             // editPassword: false,
@@ -158,9 +159,14 @@ export default {
         // this.ruleForm = JSON.parse(resp);
         // this.ruleForm.password = ""; //避免null干扰
         // this.ruleForm.checkPassword = ""; //检查
-        this.getUser(JSON.parse(resp).id);
+        this.id = JSON.parse(resp).id;
+        this.getUser(this.id);
     },
     methods: {
+        refreshList() {
+            this.getUser(this.id);
+            this.updateImg();
+        },
         getUser(id) {
             getRequest("/system/hr/" + id).then(res => {
                 console.log("res", res)
@@ -181,7 +187,6 @@ export default {
         hoverImg() {
             this.hover = !this.hover;
         },
-
         submitForm(formName) {
             this.$refs[formName].validate((valid) => {
                 if (valid) {
@@ -193,12 +198,8 @@ export default {
                         id: this.ruleForm.id,
                         enabled: true
                     }
-                    // console.log("valid", updateruleForm);
                     putRequest("/system/hr/", updateruleForm).then((res) => {
-                        // if (res.status == 200) { //修改成功
-                        //     // 重新设置session
-                        //     // window.sessionStorage.setItem("user", newValue)
-                        // }
+                        // session应该修改----------todo
                     })
                 } else {
                     console.log('error submit!!');
@@ -207,7 +208,7 @@ export default {
             });
         },
         updateImg() {
-            this.drawer = true;
+            this.drawer = !this.drawer;
         }
     }
 
