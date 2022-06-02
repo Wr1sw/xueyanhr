@@ -7,8 +7,9 @@
         <div class="tit-text" style="color: rgb(255, 255, 255);">Xue-Yi-An</div>
       </div>
       <el-menu default-active="2" class="menu" background-color="rgb(25, 26, 35)" text-color="#FFFFFF"
-        active-text-color="#409EFF" router unique-opened>
-        <el-submenu :index="index + ''" v-for="(item, index) in routes" v-if="!item.hidden" :key="index">
+         router unique-opened>
+         <!-- " -->
+        <el-submenu :index="index + ''" v-for="(item, index) in routes" v-if="!item.hidden" :key="index" >
           <template slot="title">
             <i :class="item.iconCls" class="iconCls"></i>
             <span class="RouteName">{{ item.name }}</span>
@@ -98,7 +99,7 @@ export default {
     routes() {
       // this.$route == this.$route.currentRoute --本组件路由
       // this.$router 所有组件路由
-      console.log(this.$route);
+      // console.log(this.$route);
       return this.$store.state.routes;
     }
   },

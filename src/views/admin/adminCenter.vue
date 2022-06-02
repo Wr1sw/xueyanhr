@@ -38,7 +38,7 @@
                         <el-form-item label="座机" prop="telephone">
                             <el-input v-model="ruleForm.telephone" prefix-icon="el-icon-s-platform"></el-input>
                         </el-form-item>
-                        <div v-show="!editPassword" class="tipPassword">
+                        <!-- <div v-show="!editPassword" class="tipPassword">
                             <el-form-item label="修改登录密码">
                                 <el-button type="primary" icon="el-icon-edit" circle @click="editPasswordFunc"
                                     size="mini">
@@ -55,7 +55,7 @@
                                     placeholder="请再次输入"></el-input>
                             </el-form-item>
 
-                        </div>
+                        </div> -->
 
 
                         <el-form-item>
@@ -85,7 +85,7 @@
 import upload from "../../components/admin/upload.vue"
 
 import common from "@/utils/common";
-import { putRequest } from "@/utils/api";
+import { putRequest, getRequest } from "@/utils/api";
 import { enabled } from "sockjs-client/lib/info-iframe";
 export default {
     name: "adminCenter",
@@ -133,7 +133,7 @@ export default {
             drawer: false,
             // labelPosition: 'right',
             ruleForm: {},
-            editPassword: false,
+            // editPassword: false,
             rules: {
                 telephone: [
                     { required: true, message: '请输入座机', trigger: 'blur' }
@@ -141,12 +141,12 @@ export default {
                 phone: [
                     { required: true, validator: checkPhone, trigger: 'blur' }
                 ],
-                password: [
-                    { required: true, validator: validatePass, trigger: 'blur' }
-                ],
-                checkPassword: [
-                    { required: true, validator: validatePass2, trigger: 'blur' }
-                ],
+                // password: [
+                //     { required: true, validator: validatePass, trigger: 'blur' }
+                // ],
+                // checkPassword: [
+                //     { required: true, validator: validatePass2, trigger: 'blur' }
+                // ],
 
             }
         }
@@ -154,19 +154,30 @@ export default {
     created() {
         // 获取user对象
         const resp = window.sessionStorage.getItem("user");
-        // console.log(JSON.parse(resp));
-        this.ruleForm = JSON.parse(resp);
-        this.ruleForm.password = ""; //避免null干扰
-        this.ruleForm.checkPassword = ""; //检查
-
+        // // console.log(JSON.parse(window.sessionStorage.getItem("user")));
+        // this.ruleForm = JSON.parse(resp);
+        // this.ruleForm.password = ""; //避免null干扰
+        // this.ruleForm.checkPassword = ""; //检查
+        this.getUser(JSON.parse(resp).id);
     },
     methods: {
+        getUser(id) {
+            getRequest("/system/hr/" + id).then(res => {
+                console.log("res", res)
+                this.ruleForm = res.obj;
+            })
+            // 测试404
+            // getRequest("/123" + id).then(res => {
+            //     console.log("res", res)
+            //     this.ruleForm = res.obj;
+            // })
+        },
         cancel() {
-            this.$router.go(0)
+            this.$router.go(0);//刷新页面
         },
-        editPasswordFunc() {
-            this.editPassword = true;
-        },
+        // editPasswordFunc() {
+        //     this.editPassword = true;
+        // },
         hoverImg() {
             this.hover = !this.hover;
         },
@@ -176,16 +187,18 @@ export default {
                 if (valid) {
                     // (this.ruleForm.password== ""? null:this.ruleForm.password),
                     let updateruleForm = {
-                        password: this.ruleForm.password,
+                        // password: this.ruleForm.password,
                         phone: this.ruleForm.phone,
                         telephone: this.ruleForm.telephone,
                         id: this.ruleForm.id,
                         enabled: true
                     }
-                    console.log("valid", updateruleForm);
+                    // console.log("valid", updateruleForm);
                     putRequest("/system/hr/", updateruleForm).then((res) => {
-                        console.log("res", res)
-
+                        // if (res.status == 200) { //修改成功
+                        //     // 重新设置session
+                        //     // window.sessionStorage.setItem("user", newValue)
+                        // }
                     })
                 } else {
                     console.log('error submit!!');

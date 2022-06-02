@@ -5,7 +5,9 @@ import Home from '../views/Home.vue'
 import Chat from '../views/chat/Chat.vue'
 import AdminCenter from '../views/admin/adminCenter.vue'
 import Setting from '../views/admin/setting.vue'
-
+import status404 from '../views/statusPages/status404.vue'
+import status403 from '../views/statusPages/status403.vue'
+import statusUnknown from '../views/statusPages/statusUnknown.vue'
 
 
 Vue.use(VueRouter)
@@ -42,7 +44,24 @@ const routes = [
       }
     ]
   },
-
+  {
+    path: '/404',
+    name: '404page',
+    component: status404,
+    hidden: true
+  },
+  {
+    path: '/403',
+    name: '403page',
+    component: status403,
+    hidden: true
+  },
+  {
+    path: '/unknown',
+    name: 'unknownPage',
+    component: statusUnknown,
+    hidden: true
+  }
 
 ]
 

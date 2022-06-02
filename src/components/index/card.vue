@@ -4,7 +4,7 @@
             <el-col :span="12">
                 <div class="greet"> {{ greetWord }}</div>
                 <div class="weather"> {{ weatherWord }}</div>
-            </el-col>t
+            </el-col>
             <el-col :span="6">
                 <div class="">
                     <img src="./../../assets/images/dashboard.70e55b71.png" class="card1_img" alt="" data-v-ca92126c="">
@@ -16,31 +16,66 @@
 
         </el-card>
 
-        <el-card shadow="never" class="card card2">
+        <el-row>
+            <el-col :span="24">
+                <div class="row">
+                </div>
+            </el-col>
+        </el-row>
 
-            <div slot="header" class="card2Title">
-                <span>快捷入口</span>
-            </div>
-            <div>
-                <el-row type="flex" class="row-bg">
-                    <el-col :span="6" v-for="(item, index) in quickEntrance" :key="index">
-                        <div class="quickEntranceItem">
-                            <div class="icon" @click="changeRouter(index)">
-                                <i :class="quickEntrance[index].icon"
-                                    :style="{ backgroundColor: quickEntranceColor[index] }"></i><br>
-                                <span> {{ quickEntrance[index].name }}</span>
+        <el-row type="flex" class="row-bg">
+            <!-- 左侧快捷入口 -->
+            <el-col :span="10">
+                <el-card shadow="never" class="card card2" width="50%">
+                    <div slot="header" class="card2Title">
+                        <span>快捷入口</span>
+                    </div>
+                    <!-- <div class="el-card__body"> -->
+                    <el-row type="flex" class="row-bg qucickEntrance">
+                        <el-col :span="12" v-for="(item, index) in quickEntrance" :key="index">
+                            <div class="quickEntranceItem">
+                                <div class="icon" @click="changeRouter(index)">
+                                    <i :class="quickEntrance[index].icon"
+                                        :style="{ backgroundColor: quickEntranceColor[index] }"></i><br>
+                                    <span> {{ quickEntrance[index].name }}</span>
+
+                                </div>
+
 
                             </div>
+                        </el-col>
+                    </el-row>
+                    <!-- </div> -->
+                </el-card>
+            </el-col>
+            <el-col :span="2"></el-col>
+            <!-- 公告栏 -->
+            <el-col :span="12">
+                <el-card shadow="never" class="card card3">
+                    <div slot="header" class="card2Title">
+                        <span>公告栏</span>
+                    </div>
+                    <el-timeline :reverse="reverse">
+
+                        <el-timeline-item v-for="(item, index) in anouncement" :key="index" :timestamp="item.time">
+                            {{ item.title }} <span class="reporter"> {{ item.reporter }}</span>
+                        </el-timeline-item>
+                    </el-timeline>
+                </el-card>
 
 
-                        </div>
-                    </el-col>
-                </el-row>
-            </div>
-        </el-card>
 
-        
-        <el-card shadow="never" class="card card3">
+            </el-col>
+
+        </el-row>
+
+        <el-row>
+            <el-col :span="24">
+                <div class="row">
+                </div>
+            </el-col>
+        </el-row>
+        <el-card shadow="never" class="card card4">
             <myVideo></myVideo>
         </el-card>
     </div>
@@ -51,8 +86,8 @@ import { getRequest } from '@/utils/api';
 import video from "./video.vue"
 export default {
     name: "card",
-    components:{
-        myVideo:video,
+    components: {
+        myVideo: video,
     },
     data() {
         return {
@@ -66,14 +101,38 @@ export default {
                 icon: "el-icon-user",
             },
             {
+                name: "发布公告",
+                route: "",
+                icon: "el-icon-bell",
+            },
+            {
                 name: "关于我们",
-                route: "11",
+                route: "",
+                icon: "el-icon-star-off",
+            },
+            {
+                name: "关于我们",
+                route: "",
                 icon: "el-icon-star-off",
             },
                 // {
-                //     name: "个人中心",
-                //     route:"adminCenter",
-                //     icon:"....",
+                //     name: "关于我们",
+                //     route: "",
+                //     icon: "el-icon-star-off",
+                // },
+
+            ],
+            reverse: false,
+            anouncement: [
+                // {
+                //     content: '活动按期开始',
+                //     timestamp: '2018-04-15'
+                // }, {
+                //     content: '通过审核',
+                //     timestamp: '2018-04-13'
+                // }, {
+                //     content: '创建成功',
+                //     timestamp: '2018-04-11'
                 // }
             ]
         }
@@ -81,8 +140,15 @@ export default {
     mounted() {
         this.getWeather();
         this.setGreetWords();
+        this.getAnoucement();
     },
     methods: {
+        getAnoucement() {
+            getRequest("/statistics/record/").then(res => {
+                this.anouncement = res.obj
+                console.log("res", this.anouncement)
+            })
+        },
         changeRouter(index) {
             console.log(JSON.parse(window.sessionStorage.getItem("user")))
             this.$router.push(this.quickEntrance[index].route);
@@ -94,7 +160,7 @@ export default {
                 if (res.code == 200) {
                     let temp = res.now.temp;
                     let condi = res.now.text;
-                    this.weatherWord = "今日" + condi + "，温度" + temp+"℃";
+                    this.weatherWord = "今日" + condi + "，温度" + temp + "℃";
                 }
 
             })
@@ -116,9 +182,9 @@ export default {
 </script>
 
 <style scoped>
-.card {
+/* .card {
     margin-bottom: 20px;
-}
+} */
 
 .card1 {
     position: relative;
@@ -156,9 +222,31 @@ export default {
     height: 600px
 }
 
+.row {
+    height: 20px;
+    background-color: #F0F2F5;
+}
+
+.card2 {
+    /* margin-bottom: 0px; */
+}
+
+/deep/.el-card__body {
+    padding-bottom: 0;
+}
+
+.card2 {
+    margin-left: 20px;
+    border: 0px;
+}
+
+.qucickEntrance {
+    flex-wrap: wrap;
+}
 
 .quickEntranceItem {
     text-align: center;
+    margin-bottom: 30px;
 }
 
 
@@ -186,5 +274,18 @@ export default {
 .icon:hover,
 .icon:hover {
     cursor: pointer;
+}
+
+.card3 {
+    border: 0;
+}
+
+.reporter {
+    position: absolute;
+    right: 20px;
+}
+
+.card4 /deep/.el-card__body {
+    padding: 0;
 }
 </style>

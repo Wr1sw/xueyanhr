@@ -15,9 +15,11 @@ axios.interceptors.response.use(success=>{
     return success.data;
 }, error => {
     if (error.response.status==504 || error.response.status == 404) {
-        Message.error({message:'呜呜呜服务器不见了:('})
+        Message.error({message:'服务器不见了:('});
+        router.replace('/404');
     } else if (error.response.status == 403) {
         Message.error({message:'权限不足，请联系管理员'})
+        router.replace('/403');
     } else if (error.response.status == 401) {
         Message.error({message:'要登陆的哟'})
         router.replace('/')
@@ -27,6 +29,7 @@ axios.interceptors.response.use(success=>{
         } else {
             Message.error({message:'出大问题，未知错误'})
         }
+        router.replace('/unknown');
     }
     return;
 })
