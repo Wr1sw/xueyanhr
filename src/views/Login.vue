@@ -35,15 +35,15 @@
           <el-tab-pane label="手机登录" name="phoneLogin">
             <el-form :rules="rules" ref="phoneLoginForm" :model="phoneLoginForm">
 
-              <el-form-item prop="phone">
-                <el-input type="text" v-model="phoneLoginForm.phone" auto-complete="off" placeholder="手机号码，仅支持大陆手机"
+              <el-form-item prop="mobile">
+                <el-input type="text" v-model="phoneLoginForm.mobile" auto-complete="off" placeholder="手机号码，仅支持大陆手机"
                   suffix-icon="el-icon-phone-outline"></el-input>
               </el-form-item>
 
-              <el-form-item prop="phoneCode">
+              <el-form-item prop="smsCode">
                 <el-col :span="11">
-                  <el-input v-model="phoneLoginForm.phoneCode" auto-complete="off" placeholder="请输入验证码" size=""
-                    maxlength="4" @keyup.enter.native="submitPhoneLogin"></el-input>
+                  <el-input v-model="phoneLoginForm.smsCode" auto-complete="off" placeholder="请输入验证码" size=""
+                    maxlength="6" @keyup.enter.native="submitPhoneLogin"></el-input>
 
                   <!-- <el-input placeholder="短信验证码" :model="phoneLoginForm.code"></el-input> -->
                 </el-col>
@@ -120,6 +120,7 @@
 <script>
 
 import common from "@/utils/common";
+import {postRequest} from "@/utils/api";
 export default {
   name: "Login",
   data() {
@@ -163,8 +164,8 @@ export default {
         code:''
       },
       phoneLoginForm: {
-        phone: "18990510820",
-        phoneCode: ""
+        mobile: "18376756201",
+        smsCode: ""
       },
       emailLoginForm: {
         email: "1335098123@qq.com",
@@ -180,10 +181,10 @@ export default {
         username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
         password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
         code:     [{ required: true, message: '请输入验证码', trigger: 'blur'}],
-        phone: [{ required: true, validator: checkPhone, trigger: 'blur' }],
-        phoneCode: [{ required: true, message: "请输入验证码", trigger: 'blur' }],
+        mobile: [{ required: true, validator: checkPhone, trigger: 'blur' }],
+        smsCode: [{ required: true, message: "请输入短信验证码", trigger: 'blur' }],
         email: [{ required: true, validator: checkEmail, trigger: 'blur' }],
-        emailCode: [{ required: true, message: "请输入验证码", trigger: 'blur' }]
+        emailCode: [{ required: true, message: "请输入邮箱验证码", trigger: 'blur' }]
       },
       activeName: 'accountLogin',
 
@@ -224,20 +225,19 @@ export default {
     submitPhoneLogin() {
       const _this = this
       //判断输入的验证码是否为空
-      if (this.phoneLoginForm.phoneCode != null) {
+      if (this.phoneLoginForm.smsCode != null) {
         this.$refs.phoneLoginForm.validate((valid) => {
           if (valid) {
-            console.log("111")
-            // ------------------ TODO  发送请求-验证用户手机号和输入的验证码---------------
+            this.postRequest('/sms/login?mobile='+this.phoneLoginForm.mobile+'&smsCode='+this.phoneLoginForm.smsCode).then(resp => {
+              if (resp) {
+                this.setUserInfo(resp); // 设置用户、路由信息
+              } else {
+                console.log('=>>>>>')
+              }
+            })
 
-            // _this.$axios.post("/iosLogin", {
-            //   "phone": this.ruleForm.phone,
-            //   "Verification": this.ruleForm.code
-            // }).then(res => {
-            //   this.setUserInfo(resp); // 设置用户、路由信息(可用)
-            // })
           } else {
-            // console.log('error submit!!');
+            this.$message.error('请输入所有字段')
             return false;
           }
         })
@@ -246,19 +246,19 @@ export default {
     getPhoneCode() { // 获取手机验证码
       const _this = this
       const params = {}
-      params.phone = this.phoneLoginForm.phone
+      params.phone = this.phoneLoginForm.mobile
 
-      //-------------------------------------- TODO 调用获取短信验证码接口--------------------------------------
-      // _this.$axios.post('/sendMessage', params).then(res => {
-      // console.log("--------查看后台响应的值-----", res)
-      // if (res.data.code === 200) {
-      //   this.$message({
-      //     message: '验证码已发送，请稍候...',
-      //     type: 'success',
-      //     center: true
-      //   })
-      // }
-      // })
+      console.log(this.phoneLoginForm.mobile)
+      this.getRequest('/sms/code?mobile='+this.phoneLoginForm.mobile).then(res => {
+      console.log("--------查看后台响应的值-----", res)
+      if (res.data.code === 200) {
+        this.$message({
+          message: '验证码已发送，请稍候...',
+          type: 'success',
+          center: true
+        })
+      }
+      })
 
 
       //设置验证码 可点击状态   
@@ -378,7 +378,7 @@ export default {
     getCodeBtnDisable: {
       get() {
         if (this.waitTime === this.standardWaitTime) {
-          if (this.phoneLoginForm.phone) {
+          if (this.phoneLoginForm.mobile) {
             return false
           }
           return true
