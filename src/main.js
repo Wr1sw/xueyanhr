@@ -12,13 +12,11 @@ import {getRequest} from "@/utils/api";
 import {putRequest} from "@/utils/api";
 import {deleteRequest} from "@/utils/api";
 import echarts from "echarts";
-
-import VueCoreVideoPlayer from 'vue-core-video-player'
+import VueCoreVideoPlayer from 'vue-core-video-player';
 
 Vue.use(VueCoreVideoPlayer, {
   lang: 'zh-CN'
-})
-
+});
 
 
 Vue.prototype.postRequest = postRequest;
