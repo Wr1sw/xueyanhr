@@ -322,7 +322,7 @@ export default {
 .add_row{
   width: 200px;
   height: 78px;
-  margin-left: 75%;
+  margin-left: 5%;
 }
 .main{
   height: 490px;
@@ -330,7 +330,7 @@ export default {
 }
 .main_table{
   height: 488px;
-  width: 95%;
+  width: 90%;
   margin: 0 auto;
 }
 .footer{
@@ -338,7 +338,7 @@ export default {
   display: flex;
 }
 .footer_page{
-  width: 500px;
+  width: 300px;
   height: 30px;
   margin: 0 auto;
 }

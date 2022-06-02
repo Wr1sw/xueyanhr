@@ -11,6 +11,7 @@ import statusUnknown from '../views/statusPages/statusUnknown.vue'
 import Announcement from "@/views/admin/Announcement";
 //后期删掉
 import StaRecord from "@/views/sta/StaRecord";
+import SendMail from "@/views/admin/SendMail";
 Vue.use(VueRouter)
 
 const routes = [
@@ -44,12 +45,16 @@ const routes = [
         hidden:true
       },{
         path: '/editor/:id',
-        name:'announcement',
+        name:'公告',
         component: Announcement
       },{
         path: '/sta/record',
         name:'announcement',
         component: StaRecord,
+      }, {
+        path: '/mail',
+        name:'写邮件',
+        component: SendMail,
       }
     ]
   },

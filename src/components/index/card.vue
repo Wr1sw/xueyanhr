@@ -101,7 +101,7 @@ export default {
             },
             {
                 name: "写邮件",
-                route: "",
+                route: "/mail",
                 icon: "el-icon-message",
             },
             {
@@ -144,26 +144,23 @@ export default {
         getAnoucement() {
             getRequest("/statistics/record/").then(res => {
                 this.anouncement = res.obj
-                console.log("res", this.anouncement)
             })
         },
         changeRouter(index) {
-          console.log(JSON.parse(window.sessionStorage.getItem("user")))
           if (this.quickEntrance[index].name === "发布公告"){
             this.$router.push({
-              name:'announcement',
+              name:'公告',
               params:{
                 id: -1,
               }
             });
           }else
             this.$router.push(this.quickEntrance[index].route);
-            // console.log("val", val);
         },
         getWeather() {
             const url = "https://devapi.qweather.com/v7/weather/now?location=104.07,30.67&key=b866fd31862e494bab6fab8143e9f709"
             getRequest(url).then((res) => {
-                if (res.code === 200) {
+                if (res.code === "200") {
                     let temp = res.now.temp;
                     let condi = res.now.text;
                     this.weatherWord = "今日" + condi + "，温度" + temp + "℃";
@@ -177,7 +174,7 @@ export default {
                 this.greetWord = "早上好管理员，请开始一天的工作吧"
             }
             else if (12 < hour && hour < 18) {
-                this.greetWord = "下午好管理员，下午也要打气精神努力工作哦"
+                this.greetWord = "下午好管理员，下午也要打起精神努力工作哦"
             } else {
                 this.greetWord = "晚上好管理员，要好好休息了哦"
             }
@@ -193,7 +190,6 @@ export default {
         },
         isUrge(item){
           if(item.isUrge === 1){
-            console.log("in---------------")
             return {'color': 'lightcoral'}
           }
         }
