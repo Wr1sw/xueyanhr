@@ -8,8 +8,9 @@ import Setting from '../views/admin/setting.vue'
 import status404 from '../views/statusPages/status404.vue'
 import status403 from '../views/statusPages/status403.vue'
 import statusUnknown from '../views/statusPages/statusUnknown.vue'
-
-
+import Announcement from "@/views/admin/Announcement";
+//后期删掉
+import StaRecord from "@/views/sta/StaRecord";
 Vue.use(VueRouter)
 
 const routes = [
@@ -41,6 +42,14 @@ const routes = [
         name: '设置',
         component:Setting,
         hidden:true
+      },{
+        path: '/editor/:id',
+        name:'announcement',
+        component: Announcement
+      },{
+        path: '/sta/record',
+        name:'announcement',
+        component: StaRecord,
       }
     ]
   },
@@ -56,6 +65,7 @@ const routes = [
     component: status403,
     hidden: true
   },
+  //  后期删掉
   {
     path: '/unknown',
     name: 'unknownPage',
