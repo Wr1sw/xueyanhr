@@ -9,7 +9,7 @@
       <div class="choice"><el-button type="success" icon="el-icon-s-promotion" plain @click="otherChart('workAge')">工龄信息</el-button></div>
       <div class="choice"><el-button type="success" icon="el-icon-s-promotion" plain @click="otherChart('title')">职称信息</el-button></div>
       <div class="choice"><el-button type="success" icon="el-icon-s-promotion" plain @click="otherChart('departmentPerson')">部门人数</el-button></div>
-      <div class="choice"><el-button type="success" icon="el-icon-s-promotion" plain @click="salaryChart('title')">工资</el-button></div>
+<!--      <div class="choice"><el-button type="success" icon="el-icon-s-promotion" plain @click="salaryChart('title')">工资</el-button></div>-->
     </div>
   </div>
 </template>

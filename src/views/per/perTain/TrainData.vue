@@ -217,32 +217,21 @@ export default {
     //插入一条记录
     insertATrainData(){
       let url = "/personnel/train/insertATrain"
-      let data = this.trainDataItem;
-      console.log("<======")
-      console.log(this.trainDataItem)
-      console.log(data)
-      this.trainDataItem = {};
-      this.$refs['trainDataForm'].resetFields();
-      // postRequest(url,data).then(res=>{
-      //   let result = res.ok
-      //   if(result === "success"){
-      //     this.showMessage("添加成功", true)
-      //   }
-      //   this.getTrainData();
-      // })
+      postRequest(url,this.trainDataItem).then(res=>{
+        let result = res.ok
+        if(result === "success"){
+          this.showMessage("添加成功", true)
+        }
+        this.getTrainData();
+      })
     },
     //更新一条记录
     updateATrainData(){
       let url = "/personnel/train/updateTrainByPrimaryKeySelective"
-      let data = this.trainDataItem;
-      // this.trainDataItem = {}
-      console.log(data)
-      // this.$refs['trainDataForm'].resetFields();
-      this.clearData();
-      // postRequest(url,data).then(res=>{
-      //   this.getTrainData();
-      //   this.showMessage("更新成功", true)
-      // })
+      postRequest(url,this.trainDataItem).then(res=>{
+        this.getTrainData();
+        this.showMessage("更新成功", true)
+      })
     },
     //删除一条记录
     deleteATrainData(id){
@@ -257,14 +246,6 @@ export default {
       this.addTrainDataStatus = false
       this.trainDataItem = {}
       this.$refs['trainDataForm'].resetFields();
-    },
-
-    clearData(){
-      this.trainDataItem.id = null;
-      this.trainDataItem.beginDate = null;
-      this.trainDataItem.endDate = null;
-      this.trainDataItem.content = null;
-      this.trainDataItem.name = null;
     },
 
     /******************************* 其它函数，公共操作 ***********************************/
