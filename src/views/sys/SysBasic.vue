@@ -8,7 +8,7 @@
     <el-tab-pane label="奖惩规则" name="rpmana"><RpMana></RpMana></el-tab-pane>
 <!--    <el-tab-pane label="kpi规则" name="kpimana"><KpiMana></KpiMana></el-tab-pane>-->
     <el-tab-pane label="权限组" name="permana"><PerMana></PerMana></el-tab-pane>
-    <el-tab-pane label="培训内容管理" name="tramana"><TraMana></TraMana></el-tab-pane>
+<!--    <el-tab-pane label="培训内容管理" name="tramana"><TraMana></TraMana></el-tab-pane>-->
   </el-tabs>
 </div>
 </template>
