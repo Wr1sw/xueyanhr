@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Login from '../views/Login.vue'
 import Home from '../views/Home.vue'
 import Chat from '../views/chat/Chat.vue'
+import temp from '../views/temp.vue'
 import AdminCenter from '../views/admin/adminCenter.vue'
 import Setting from '../views/admin/setting.vue'
 import status404 from '../views/statusPages/status404.vue'
@@ -15,6 +16,12 @@ import SendMail from "@/views/admin/SendMail";
 Vue.use(VueRouter)
 
 const routes = [
+  {
+    path: '/temp',
+    name:'temp',
+    component: temp,
+    hidden: true
+  },
   {
     path: '/',
     name: 'Login',
