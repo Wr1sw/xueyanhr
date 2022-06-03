@@ -5,20 +5,21 @@
                     size="small"
                     class="addTraInput"
                     v-loading="loading"
+                    style="width: 200px"
                     element-loading-text="正在加载..."
                     element-loading-spinner="el-icon-loading"
                     element-loading-background="rgba(0, 0, 0, 0.8)"
                     placeholder="添加培训..."
                     prefix-icon="el-icon-plus"
-                    @keydown.enter.native="addPosition"
+                    @keydown.enter.native="addTrain"
                     v-model="train.name">
             </el-input>
             <el-input v-model="train.content" placeholder="培训内容" size="small"
-                      style="margin-left: 5px;margin-right: 5px"></el-input>
+                      style="margin-left: 5px;margin-right: 5px; width: 300px"></el-input>
             <el-input v-model="train.beginDate" placeholder="开始时间" size="small"
-                      style="margin-left: 5px;margin-right: 5px"></el-input>
+                      style="margin-left: 5px;margin-right: 5px; width: 170px"></el-input>
             <el-input v-model="train.endDate" placeholder="结束时间" size="small"
-                      style="margin-left: 5px;margin-right: 5px"></el-input>
+                      style="margin-left: 5px;margin-right: 5px; width: 170px"></el-input>
             <el-button icon="el-icon-plus" size="small" type="primary" @click="addTrain">添加</el-button>
         </div>
         <div class="TraManaMain">
@@ -29,10 +30,10 @@
                     size="small"
                     stripe
                     style="width: 70%">
-                <el-table-column
-                        type="selection"
-                        width="55">
-                </el-table-column>
+<!--                <el-table-column-->
+<!--                        type="selection"-->
+<!--                        width="55">-->
+<!--                </el-table-column>-->
                 <el-table-column
                         prop="id"
                         label="编号"
@@ -79,9 +80,9 @@
                     </template>
                 </el-table-column>
             </el-table>
-            <el-button @click="deleteMany" type="danger" size="small" style="margin-top: 8px"
-                       :disabled="multipleSelection.length==0">批量删除
-            </el-button>
+<!--            <el-button @click="deleteMany" type="danger" size="small" style="margin-top: 8px"-->
+<!--                       :disabled="multipleSelection.length==0">批量删除-->
+<!--            </el-button>-->
         </div>
         <el-dialog
                 title="修改信息"

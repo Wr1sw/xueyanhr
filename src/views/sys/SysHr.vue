@@ -22,12 +22,14 @@
                         <img :src="hr.userface" :alt="hr.name" :title="hr.name" class="userface-img">
                     </div>
 
-                    <div class="userinfo-container">
+                    <div class="userinfo-container" >
                         <div>用户名：{{hr.name}}</div>
                         <div>username：{{hr.username}}</div>
                         <div>手机号码：{{hr.phone}}</div>
+                        <div>邮箱：{{hr.email}}</div>
                         <div>电话号码：{{hr.telephone}}</div>
                         <div>地址：{{hr.address}}</div>
+                        <div>github令牌：{{hr.githubtoken}}</div>
                         <div>用户状态：
                             <el-switch
                                     v-model="hr.enabled"
@@ -72,19 +74,28 @@
         </div>
 <!--        <div>-->
             <el-dialog
+                :key="key"
                 :title="dialogTitle"
                 :visible.sync="dialogVisible"
                 width="30%">
                 <div >
+<!--                    <div class="img-container">-->
+<!--                        <img :src="updatehr.userface" :alt="updatehr.name" :title="updatehr.name" class="userface-img">-->
+<!--                    </div>-->
                     <table>
                         <tr>
-                            <td><el-tag>用户名：</el-tag></td>
+                            <td><el-tag>姓名：</el-tag></td>
                             <td><el-input size="small" @input="change($event)" style="margin-left: 5px" v-model="updatehr.name"></el-input></td>
                         </tr>
                         <tr>
                             <td><el-tag>手机号码：</el-tag></td>
                             <td>
                                 <el-input size="small" @input="change($event)" style="margin-left: 5px" v-model="updatehr.phone"></el-input> </td>
+                        </tr>
+                        <tr>
+                            <td><el-tag>邮箱：</el-tag></td>
+                            <td>
+                                <el-input size="small" @input="change($event)" style="margin-left: 5px" v-model="updatehr.email"></el-input> </td>
                         </tr>
                         <tr>
                             <td><el-tag>电话号码：</el-tag></td>
@@ -94,6 +105,18 @@
                             <td><el-tag>地址：</el-tag></td>
                             <td><el-input size="small" @input="change($event)" style="margin-left: 5px" v-model="updatehr.address"></el-input> </td>
                         </tr>
+                        <tr>
+                            <td><el-tag>github令牌：</el-tag></td>
+                            <td><el-input size="small" @input="change($event)" style="margin-left: 5px" v-model="updatehr.githubtoken"></el-input> </td>
+                        </tr>
+                        <tr>
+                            <td><el-tag>用户名：</el-tag></td>
+                            <td><el-input size="small" @input="change($event)" style="margin-left: 5px" v-model="updatehr.username"></el-input> </td>
+                        </tr>
+<!--                        <tr>-->
+<!--                            <td><el-tag>密码：</el-tag></td>-->
+<!--                            <td><el-input size="small" @input="change($event)" style="margin-left: 5px" v-model="updatehr.password"></el-input> </td>-->
+<!--                        </tr>-->
                     </table>
                 </div>
                 <span slot="footer" class="dialog-footer">
@@ -110,6 +133,8 @@
         name: "SysHr",
         data() {
             return {
+                hover: false,
+                key: 0,
                 dialogVisible:false,
                 dialogTitle: '',
                 ifMaterialEdit: 0,
@@ -120,16 +145,26 @@
                 hrbasic:{
                     name:'',
                     phone:'',
+                    email:'',
                     telephone:'',
                     address:'',
-                    enabled:''
+                    githubtoken:'',
+                    enabled:'',
+                    username:'',
+                    password:'',
+                    userface:''
                 },
                 updatehr:{
                     name:'',
                     phone:'',
+                    email:'',
                     telephone:'',
                     address:'',
-                    enabled:''
+                    githubtoken:'',
+                    enabled:'',
+                    username:'',
+                    password:'',
+                    userface:''
                 },
                 Visible: false
             }
@@ -138,6 +173,9 @@
             this.initHrs();
         },
         methods: {
+            hoverImg() {
+                this.hover = !this.hover;
+            },
             deleteHr(hr) {
                 this.$confirm('此操作将永久删除【'+hr.name+'】, 是否继续?', '提示', {
                     confirmButtonText: '确定',
@@ -163,8 +201,6 @@
                 this.$forceUpdate();
             },
             dochange(){
-                console.log(this.ifMaterialEdit);
-                console.log(this.updatehr);
                 if(this.ifMaterialEdit == 1){
                     this.doApp();
                 }else if(this.ifMaterialEdit == 0){
@@ -173,7 +209,6 @@
             },
             doApp(){
                 this.updatehr.enabled = true;
-                console.log(22+this.updatehr);
                 this.postRequest("/system/hr/", this.updatehr).then(resp =>{
                     if(resp){
                         this.initHrs();
@@ -187,17 +222,17 @@
                   this.dialogVisible = true;
                   this.dialogTitle = '编辑基本信息';
                   this.showEditView(data);
+                  // this.key += 1;
               }else{
                   this.ifMaterialEdit = 1;
                   this.dialogVisible = true;
                   this.dialogTitle = '新增基本信息';
-                  // this.hrbasic = '';
-                  this.updatehr = this.hrbasic;
+                  Object.assign(this.updatehr, this.hrbasic);
+                  // this.key += 1;
               }
             },
             doUpdate(){
               this.putRequest("/system/hr/", this.updatehr).then(resp =>{
-                  console.log(this.updatehr);
                     if(resp){
                         this.initHrs();
                         this.dialogVisible = false;
@@ -248,9 +283,7 @@
                 })
             },
             showEditView(data){
-                console.log(11);
                 Object.assign(this.updatehr, data);
-                console.log(this.updatehr);
                 this.dialogVisible = true;
             },
             enabledChange(hr) {

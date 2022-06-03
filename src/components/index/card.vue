@@ -177,13 +177,13 @@ export default {
             }
         },
         //从公告栏跳转到公告详情页面
-        goAnnouncement(item) {
-            this.$router.push({
-                name: 'announcement',
-                params: {
-                    id: item.id,
-                }
-            });
+        goAnnouncement(item){
+          this.$router.push({
+            name:'公告',
+            params:{
+              id: item.id,
+            }
+          });
         },
         isUrge(item) {
             if (item.isUrge === 1) {

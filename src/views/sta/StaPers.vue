@@ -9,7 +9,7 @@
       <div class="choice"><el-button type="success" icon="el-icon-s-promotion" plain @click="otherChart('workAge')">工龄信息</el-button></div>
       <div class="choice"><el-button type="success" icon="el-icon-s-promotion" plain @click="otherChart('title')">职称信息</el-button></div>
       <div class="choice"><el-button type="success" icon="el-icon-s-promotion" plain @click="otherChart('departmentPerson')">部门人数</el-button></div>
-      <div class="choice"><el-button type="success" icon="el-icon-s-promotion" plain @click="salaryChart('title')">工资</el-button></div>
+<!--      <div class="choice"><el-button type="success" icon="el-icon-s-promotion" plain @click="salaryChart('title')">工资</el-button></div>-->
     </div>
   </div>
 </template>
@@ -254,7 +254,7 @@ export default {
     },
     async initData () {
       await getRequest("/statistics/personnel/workAge").then(res=>{
-        this.info = res;
+        this.info = res.obj;
       })
       this.drawChart();
     },
@@ -268,8 +268,7 @@ export default {
     },
     onClick(url){
       getRequest("/statistics/personnel/"+url).then(res=>{
-        this.info = res;
-        console.log(this.info)
+        this.info = res.obj;
         if(this.isSalary){
           this.drawSalaryChart();
         } else{
