@@ -14,65 +14,54 @@ import Announcement from "@/views/admin/Announcement";
 import StaRecord from "@/views/sta/StaRecord";
 import SendMail from "@/views/admin/SendMail";
 
-import temp from "../views/temp.vue";
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/temp',
-<<<<<<< HEAD
     name: 'temp',
     component: temp,
     hidden: true,
-    // meta : {                      //加一个自定义obj
-    //   requireAuth:false      //这个参数 true 代表需要登录才能进入A
-  // }
-
-=======
-    name:'temp',
-    component: temp,
-    hidden: true
->>>>>>> e644bce1a650e405703062b2e8fdc67821832ccb
   },
   {
     path: '/',
     name: 'Login',
     component: Login,
     hidden: true
-  },{
+  }, {
     path: '/home',
     name: 'Home',
     component: Home,
     hidden: true,
-    children:[
+    children: [
       {
         path: '/chat',
         name: '在线聊天',
-        component:Chat,
-        hidden:true
+        component: Chat,
+        hidden: true
       },
       {
         path: '/adminCenter',
         name: '个人中心',
-        component:AdminCenter,
-        hidden:true
+        component: AdminCenter,
+        hidden: true
       },
       {
         path: '/setting',
         name: '设置',
-        component:Setting,
-        hidden:true
-      },{
+        component: Setting,
+        hidden: true
+      }, {
         path: '/editor/:id',
-        name:'公告',
+        name: '公告',
         component: Announcement
-      },{
+      }, {
         path: '/sta/record',
-        name:'announcement',
+        name: 'announcement',
         component: StaRecord,
       }, {
         path: '/mail',
-        name:'写邮件',
+        name: '写邮件',
         component: SendMail,
       }
     ]
@@ -96,7 +85,7 @@ const routes = [
     component: statusUnknown,
     hidden: true
   },
-  
+
 
 ]
 
