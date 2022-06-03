@@ -14,9 +14,9 @@
                     v-model="rp.detail">
             </el-input>
             <el-input v-model="rp.result" placeholder="奖惩金额" size="small"
-                      style="margin-left: 5px;margin-right: 5px"></el-input>
+                      style="margin-left: 5px;margin-right: 5px;width: 150px"></el-input>
             <el-select v-model="rp.ecType" placeholder="奖罚选择" size="small"
-                      style="margin-left: 5px;margin-right: 5px"><el-option
+                      style="margin-left: 5px;margin-right: 5px;width: 150px"><el-option
                     v-for="item in ecTypes"
                     :key="item"
                     :label="item"
@@ -34,10 +34,10 @@
                     size="small"
                     stripe
                     style="width: 70%">
-                <el-table-column
-                        type="selection"
-                        width="55">
-                </el-table-column>
+<!--                <el-table-column-->
+<!--                        type="selection"-->
+<!--                        width="55">-->
+<!--                </el-table-column>-->
                 <el-table-column
                         prop="id"
                         label="编号"
@@ -80,9 +80,9 @@
                     </template>
                 </el-table-column>
             </el-table>
-            <el-button @click="deleteMany" type="danger" size="small" style="margin-top: 8px"
-                       :disabled="multipleSelection.length==0">批量删除
-            </el-button>
+<!--            <el-button @click="deleteMany" type="danger" size="small" style="margin-top: 8px"-->
+<!--                       :disabled="multipleSelection.length==0">批量删除-->
+<!--            </el-button>-->
         </div>
         <el-dialog
                 title="修改规则"
