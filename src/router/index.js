@@ -12,9 +12,21 @@ import Announcement from "@/views/admin/Announcement";
 //后期删掉
 import StaRecord from "@/views/sta/StaRecord";
 import SendMail from "@/views/admin/SendMail";
+
+import temp from "../views/temp.vue";
 Vue.use(VueRouter)
 
 const routes = [
+  {
+    path: '/temp',
+    name: 'temp',
+    component: temp,
+    hidden: true,
+    // meta : {                      //加一个自定义obj
+    //   requireAuth:false      //这个参数 true 代表需要登录才能进入A
+  // }
+
+  },
   {
     path: '/',
     name: 'Login',
@@ -76,7 +88,8 @@ const routes = [
     name: 'unknownPage',
     component: statusUnknown,
     hidden: true
-  }
+  },
+  
 
 ]
 

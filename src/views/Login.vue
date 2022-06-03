@@ -120,7 +120,7 @@
 <script>
 
 import common from "@/utils/common";
-import {postRequest} from "@/utils/api";
+import {getRequest} from "@/utils/api";
 export default {
   name: "Login",
   data() {
@@ -365,6 +365,7 @@ export default {
     gitHubLogin() {
       // -----------------------------  todo  调用三方登录接口 --------------------
       console.log("三方登录");
+      location.href = "/render/github"
     },
 
 
