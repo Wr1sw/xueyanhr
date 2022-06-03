@@ -182,7 +182,7 @@ export default {
         //从公告栏跳转到公告详情页面
         goAnnouncement(item){
           this.$router.push({
-            name:'announcement',
+            name:'公告',
             params:{
               id: item.id,
             }

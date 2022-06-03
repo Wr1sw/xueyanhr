@@ -56,10 +56,6 @@ const routes = [
         name: '公告',
         component: Announcement
       }, {
-        path: '/sta/record',
-        name: 'announcement',
-        component: StaRecord,
-      }, {
         path: '/mail',
         name: '写邮件',
         component: SendMail,
