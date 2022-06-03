@@ -62,10 +62,16 @@ export default {
       tableData: [],
       selectDep: false,
       depEmpData: [],
+      salgrDetail:{
+        eid:'',
+        e_name:'',
+        deduct_sum:'',
+        salary_standard_sum:'',
+        salary_paid_sum:''
+      }
     }
   },
   mounted() {
-
     getRequest("/salary/table/department-salary").then(res => {
       this.tableData = res.data;
     })
@@ -77,8 +83,18 @@ export default {
       this.selectDep = false;
     },
     //审核
-    handleCheck() {
-      // this.$router();
+    handleCheck(data) {
+      this.salgrDetail.eid = data.workID;
+      this.salgrDetail.eName = data.ename;
+      this.salgrDetail.deductSum = data.allSalary - data.salarySum;
+      this.salgrDetail.salaryStandardSum = data.salarySum;
+      this.salgrDetail.salaryPaidSum = data.allSalary;
+      console.log(this.salgrDetail.eid)
+      postRequest("/salary/sg/",this.salgrDetail).then(resp =>{
+        if (resp){
+
+        }
+      })
     },
     // 选择部门
     handleClick(data) {
