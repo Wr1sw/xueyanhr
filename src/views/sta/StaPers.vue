@@ -254,7 +254,7 @@ export default {
     },
     async initData () {
       await getRequest("/statistics/personnel/workAge").then(res=>{
-        this.info = res;
+        this.info = res.obj;
       })
       this.drawChart();
     },
@@ -268,8 +268,7 @@ export default {
     },
     onClick(url){
       getRequest("/statistics/personnel/"+url).then(res=>{
-        this.info = res;
-        console.log(this.info)
+        this.info = res.obj;
         if(this.isSalary){
           this.drawSalaryChart();
         } else{

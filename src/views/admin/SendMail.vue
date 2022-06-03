@@ -35,9 +35,7 @@ export default {
       form:{
         subject:'',
         mail:'',
-        content:'<h1 style="text-align: center">Farewell, My friends</h1>' +
-            '<h3 style="text-align: center">没有什么能够阻挡 你对自由的向往 天马行空的生涯 你的心了无牵挂</h3>' +
-            '<h1 style="text-align: center">:-)</h1>'
+        content:''
       }
     }
   },
@@ -45,14 +43,11 @@ export default {
     send(){
       let url = "/statistics/personnel/editor/sendMail?subject="+this.form.subject+"&mail="+this.form.mail+"&content="+this.form.content;
       if(this.checkForm()){
-        postRequest(url).then(res=>{
-          if(res){
-            this.$message.success("发送成功");
-            this.$router.push({
-              name:'Home'
-            })
-          }
-        })
+        postRequest(url)
+        this.$message.success("发送成功");
+        this.$router.push({
+           name:'Home'
+         })
       }
     },
     checkForm(){

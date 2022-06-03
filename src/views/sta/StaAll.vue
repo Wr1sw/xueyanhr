@@ -147,14 +147,13 @@ export default {
     },
     async initData () {
       await getRequest("/statistics/personnel/schoolInfo").then(res=>{
-        this.info = res;
+        this.info = res.obj;
       })
       this.drawChart();
     },
     onClick(url){
       getRequest("/statistics/personnel/"+url).then(res=>{
-        this.info = res;
-        console.log(this.info)
+        this.info = res.obj;
         this.drawChart();
       })
     }
