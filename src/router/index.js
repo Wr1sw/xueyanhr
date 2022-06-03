@@ -13,54 +13,55 @@ import Announcement from "@/views/admin/Announcement";
 //后期删掉
 import StaRecord from "@/views/sta/StaRecord";
 import SendMail from "@/views/admin/SendMail";
+
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/temp',
-    name:'temp',
+    name: 'temp',
     component: temp,
-    hidden: true
+    hidden: true,
   },
   {
     path: '/',
     name: 'Login',
     component: Login,
     hidden: true
-  },{
+  }, {
     path: '/home',
     name: 'Home',
     component: Home,
     hidden: true,
-    children:[
+    children: [
       {
         path: '/chat',
         name: '在线聊天',
-        component:Chat,
-        hidden:true
+        component: Chat,
+        hidden: true
       },
       {
         path: '/adminCenter',
         name: '个人中心',
-        component:AdminCenter,
-        hidden:true
+        component: AdminCenter,
+        hidden: true
       },
       {
         path: '/setting',
         name: '设置',
-        component:Setting,
-        hidden:true
-      },{
+        component: Setting,
+        hidden: true
+      }, {
         path: '/editor/:id',
-        name:'公告',
+        name: '公告',
         component: Announcement
-      },{
+      }, {
         path: '/sta/record',
-        name:'announcement',
+        name: 'announcement',
         component: StaRecord,
       }, {
         path: '/mail',
-        name:'写邮件',
+        name: '写邮件',
         component: SendMail,
       }
     ]
@@ -83,7 +84,8 @@ const routes = [
     name: 'unknownPage',
     component: statusUnknown,
     hidden: true
-  }
+  },
+
 
 ]
 

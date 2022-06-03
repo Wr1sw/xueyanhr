@@ -120,7 +120,7 @@
 <script>
 
 import common from "@/utils/common";
-import {postRequest} from "@/utils/api";
+import {getRequest} from "@/utils/api";
 export default {
   name: "Login",
   data() {
@@ -363,12 +363,9 @@ export default {
     },
     // 三方登录
     gitHubLogin() {
-      window.open("http://localhost:15005/render/github")
-     // this.getRequest("/render/github").then(resp=>{
-     //   if (resp){
-     //      this.setUserInfo(resp); // 设置用户、路由信息
-     //     }
-     // })
+      // -----------------------------  todo  调用三方登录接口 --------------------
+      console.log("三方登录");
+      location.href = "/render/github"
     },
 
 
