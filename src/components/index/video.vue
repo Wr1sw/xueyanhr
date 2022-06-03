@@ -114,6 +114,7 @@ export default {
     height: 600px;
     overflow: hidden;
     border-radius: 10px;
+    
     .sidebar, .main {
       height: 100%;
     }

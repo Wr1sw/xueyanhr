@@ -67,8 +67,9 @@ export default {
   methods: {
     //分页获取员工列表信息
     fetchdata() {
+      this.form = "";
       getRequest(this.URL + "?PageSize=" + this.PageSize + "&currentPage=" + this.currentPage).then((res) => {
-       this.tableData = res.data;
+        this.tableData = res.data;
         this.totalCount = res.total;
       });
     },
@@ -77,11 +78,11 @@ export default {
       let afterdepid = (this.form.afterdepid === undefined) ? "" : this.form.afterdepid
       let afterjobid = (this.form.afterjobid === undefined) ? "" : this.form.afterjobid
       let afterposid = (this.form.afterposid === undefined) ? "" : this.form.afterposid
-      let name =  (this.form.ename === undefined) ? "" : this.form.ename
+      let name = (this.form.ename === undefined) ? "" : this.form.ename
 
 
       getRequest(this.URL + "query?name=" + name + "&afterdepid=" + afterdepid +
-        "&afterjobid=" + afterjobid +"&afterposid="+afterposid+ "&PageSize=" + this.PageSize + "&currentPage=" + this.currentPage
+        "&afterjobid=" + afterjobid + "&afterposid=" + afterposid + "&PageSize=" + this.PageSize + "&currentPage=" + this.currentPage
       )
         .then((res) => {
           this.totalCount = res.total; //修改数据总条数

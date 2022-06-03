@@ -34,7 +34,7 @@
 
       <el-descriptions title='调动'>
         <el-descriptions-item label="备注">
-          <el-tag size="small">若其中某项不需要调整，可不选择</el-tag>
+          <el-tag size="small">若其中某项不需要调整，可不选择，但至少选择一项</el-tag>
         </el-descriptions-item>
       </el-descriptions>
 
@@ -103,6 +103,9 @@ export default {
         removedate: [
           { required: true, message: "请选择日期", trigger: "change" },
         ],
+        // allInfo:[
+        //    { required: true, validator: checkAllInfo, trigger: 'blur' },//记录是否所有字段都空
+        // ]
         // //单选
         // ecType: [
         //   { required: true, message: "请选择奖/惩", trigger: "change" },
@@ -185,7 +188,7 @@ export default {
         (valid) => {
           if (valid) {
             if (this.form.afterdepid == null && this.form.afterjobid == null && this.form.afterposid == null) {
-              return false;
+              return this.$message.error("请至少修改一项");
             }
             if (this.form.id) {
               this.submitEditForm();

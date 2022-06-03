@@ -57,7 +57,8 @@
                     </div>
                     <el-timeline :reverse="reverse">
                         <el-timeline-item v-for="(item, index) in anouncement" :key="index" :timestamp="item.time">
-                          <span @click="goAnnouncement(item)" :style="isUrge(item)">{{ item.title }}</span> <span class="reporter" > {{ item.reporter }}</span>
+                            <span @click="goAnnouncement(item)" :style="isUrge(item)">{{ item.title }}</span> <span
+                                class="reporter"> {{ item.reporter }}</span>
                         </el-timeline-item>
                     </el-timeline>
                 </el-card>
@@ -105,19 +106,15 @@ export default {
                 icon: "el-icon-message",
             },
             {
-                name: "关于我们",
-                route: "",
-                icon: "el-icon-star-off",
+                name: "发布公告",
+                route: "/editor/:id",
+                icon: "el-icon-s-management",
             },
             {
                 name: "关于我们",
                 route: "",
                 icon: "el-icon-star-off",
-            },{
-              name: "发布公告",
-              route: "/editor/:id",
-              icon: "el-icon-s-management",
-              },
+            }
 
             ],
             reverse: false,
@@ -147,15 +144,15 @@ export default {
             })
         },
         changeRouter(index) {
-          if (this.quickEntrance[index].name === "发布公告"){
-            this.$router.push({
-              name:'公告',
-              params:{
-                id: -1,
-              }
-            });
-          }else
-            this.$router.push(this.quickEntrance[index].route);
+            if (this.quickEntrance[index].name === "发布公告") {
+                this.$router.push({
+                    name: '公告',
+                    params: {
+                        id: -1,
+                    }
+                });
+            } else
+                this.$router.push(this.quickEntrance[index].route);
         },
         getWeather() {
             const url = "https://devapi.qweather.com/v7/weather/now?location=104.07,30.67&key=b866fd31862e494bab6fab8143e9f709"
@@ -180,18 +177,18 @@ export default {
             }
         },
         //从公告栏跳转到公告详情页面
-        goAnnouncement(item){
-          this.$router.push({
-            name:'announcement',
-            params:{
-              id: item.id,
-            }
-          });
+        goAnnouncement(item) {
+            this.$router.push({
+                name: 'announcement',
+                params: {
+                    id: item.id,
+                }
+            });
         },
-        isUrge(item){
-          if(item.isUrge === 1){
-            return {'color': 'lightcoral'}
-          }
+        isUrge(item) {
+            if (item.isUrge === 1) {
+                return { 'color': 'lightcoral' }
+            }
         }
     }
 }

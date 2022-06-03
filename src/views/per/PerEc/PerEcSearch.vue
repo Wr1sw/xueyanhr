@@ -59,13 +59,15 @@ export default {
     },
     clearInfo() {
       this.form = {};
-      this.getEmpEcDetail();
+      // this.getEmpEcDetail();
     },
     queryInfo() {
       //发送给数据父组件：
       return this.$emit("searchInfo", this.form);
     },
     addInfo() {
+      this.clearInfo();//设置清空 query信息,避免之后page跳转有问题
+      this.queryInfo();
       return this.$emit("addEmp");
     },
     //获取RP信息-供查询时选择

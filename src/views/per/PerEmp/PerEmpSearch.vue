@@ -59,6 +59,8 @@ export default {
     },
     //点击了添加按钮
     addInfo() {
+      this.clearInfo();//设置清空 query信息,避免之后page跳转有问题
+      this.queryInfo();
       return this.$emit("addEmp");
     },
     //获取部门信息-供查询时选择

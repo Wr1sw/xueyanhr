@@ -59,7 +59,6 @@ export default {
     return {
       visible: false,
       rpList: [],
-      form: {},
       rules: {
         eid: [
           { required: true, message: "请选择员工", trigger: "change" },
@@ -72,7 +71,7 @@ export default {
         rid: [
           { required: true, message: "请选择奖惩原因", trigger: "change" },
         ],
-        ecdate:[
+        ecdate: [
           { required: true, message: "请选择奖惩日期", trigger: "change" },
         ]
       },
@@ -96,8 +95,11 @@ export default {
     },
     ecTypeChange(val) {
       this.getRpList(val);
-      this.form.rid = "";
-      this.form.result = "";
+      if (this.form.id) {//编辑
+        this.form.rid = "";
+        this.form.result = "";
+      }
+
     },
     submitAddForm() {
       postRequest(this.URL, this.form).then((res) => {
@@ -146,6 +148,7 @@ export default {
       //根据ID获取数据信息 
       getRequest(this.URL + this.form.id)
         .then((res) => {
+          console.log("editaaa",res);
           this.form = res.obj;
           this.getRpList(this.form.ecType);// 初始化RPList表单
           // this.ecTypeChange(this.form.ecType)

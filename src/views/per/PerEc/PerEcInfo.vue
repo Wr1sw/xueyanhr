@@ -61,6 +61,8 @@ export default {
   methods: {
     //分页获取员工列表信息
     fetchdata() {
+      // 清空query这个list，避免查询-添加-page跳转有问题
+      this.form = "";
       getRequest(this.URL + "?PageSize=" + this.PageSize + "&currentPage=" + this.currentPage).then((res) => {
         this.tableData = res.data;
         this.totalCount = res.total;

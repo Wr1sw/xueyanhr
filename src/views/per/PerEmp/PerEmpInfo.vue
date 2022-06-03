@@ -90,6 +90,7 @@ export default {
   methods: {
     //分页获取员工列表信息
     fetchdata() {
+        this.form = "";
       getRequest(this.URL+ "?PageSize=" + this.PageSize + "&currentPage=" + this.currentPage).then((res) => {
         this.tableData = res.data;
         this.totalCount = res.total;

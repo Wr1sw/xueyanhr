@@ -42,9 +42,9 @@ export default {
   data() {
     return {
       form: this.searchForm,
-      depList:[],
-      jobList:[],
-      posList:[]
+      depList: [],
+      jobList: [],
+      posList: []
     };
   },
   mounted() {
@@ -59,6 +59,8 @@ export default {
       return this.$emit("searchInfo", this.form);
     },
     addInfo() {
+      this.clearInfo();//设置清空 query信息,避免之后page跳转有问题
+      this.queryInfo();
       return this.$emit("addEmp");
     },
     // //获取下拉框信息-供查询时选择
