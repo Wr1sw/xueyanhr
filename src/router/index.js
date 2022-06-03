@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Login from '../views/Login.vue'
 import Home from '../views/Home.vue'
 import Chat from '../views/chat/Chat.vue'
+import temp from '../views/temp.vue'
 import AdminCenter from '../views/admin/adminCenter.vue'
 import Setting from '../views/admin/setting.vue'
 import status404 from '../views/statusPages/status404.vue'
@@ -19,6 +20,7 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/temp',
+<<<<<<< HEAD
     name: 'temp',
     component: temp,
     hidden: true,
@@ -26,6 +28,11 @@ const routes = [
     //   requireAuth:false      //这个参数 true 代表需要登录才能进入A
   // }
 
+=======
+    name:'temp',
+    component: temp,
+    hidden: true
+>>>>>>> e644bce1a650e405703062b2e8fdc67821832ccb
   },
   {
     path: '/',

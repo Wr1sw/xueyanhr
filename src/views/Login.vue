@@ -75,7 +75,7 @@
               <el-form-item prop="emailCode">
                 <el-col :span="11">
                   <el-input v-model="emailLoginForm.emailCode" auto-complete="off" placeholder="请输入验证码" size=""
-                    maxlength="4" @keyup.enter.native="submitEmailLogin"></el-input>
+                    maxlength="6" @keyup.enter.native="submitEmailLogin"></el-input>
 
                 </el-col>
                 <el-col :span="11">
@@ -187,7 +187,6 @@ export default {
         emailCode: [{ required: true, message: "请输入邮箱验证码", trigger: 'blur' }]
       },
       activeName: 'accountLogin',
-
     }
   },
   methods: {
@@ -311,14 +310,13 @@ export default {
         this.$refs.emailLoginForm.validate((valid) => {
           if (valid) {
             console.log("111")
-            // ------------------ TODO  发送请求-验证用户手机号和输入的验证码---------------
-
-            // _this.$axios.post("/iosLogin", {
-            //   "phone": this.ruleForm.phone,
-            //   "Verification": this.ruleForm.code
-            // }).then(res => {
-            //   this.setUserInfo(resp); // 设置用户、路由信息(可用)
-            // })
+            this.postRequest('/email/login?email='+this.emailLoginForm.email+'&emailCode='+this.emailLoginForm.emailCode).then(resp => {
+              if (resp) {
+                this.setUserInfo(resp); // 设置用户、路由信息
+              } else {
+                console.log('=>>>>>')
+              }
+            })
           } else {
             // console.log('error submit!!');
             return false;
@@ -329,20 +327,22 @@ export default {
     getEmailCode() { // 获取邮箱验证码
       const _this = this
       const params = {}
-      params.mail = this.emailLoginForm.mail
+      params.email = this.emailLoginForm.email
 
+
+      this.getRequest('/email/code?email='+this.emailLoginForm.email).then(res => {
+        console.log("--------查看后台响应的值-----", res)
+        if (res.data.code === 200) {
+          this.$message({
+            message: '验证码已发送，请稍候...',
+            type: 'success',
+            center: true
+          })
+        }
+      })
       // --------------------------------TODO 调用邮箱验证码接口---------------------------------
 
-      // _this.$axios.post('/sendMessage', params).then(res => {
-      // console.log("--------查看后台响应的值-----", res)
-      // if (res.data.code === 200) {
-      //   this.$message({
-      //     message: '验证码已发送，请稍候...',
-      //     type: 'success',
-      //     center: true
-      //   })
-      // }
-      // })
+
 
 
       let that = this
@@ -372,7 +372,45 @@ export default {
     // 控制三种方式的切换
     handleClick(tab, event) {
       // console.log(tab, event);
-    }
+    },
+    // saveInfo () {
+    //   alert(123)
+    //   console.log(this.$route)
+    //   let info = this.$route.query.result;
+    //   console.log(info)
+    //   // this.res
+    //   // let info = JSON.parse()
+    //   console.log("=>>>>>>>>>>>");
+    //   console.log(this.res)
+    //   // alert(info)
+    //
+    //   if (info) {
+    //     alert("12312312")
+    //     console.log("123123")
+    //     console.log("123123")
+    //     console.log("123123")
+    //     console.log("123123")
+    //     console.log("123123")
+    //     console.log("123123")
+    //     this.$store.commit('init_currentHr', info.obj);
+    //     window.sessionStorage.setItem("user", JSON.stringify(info.obj));
+    //     let path = this.$route.query.redirect;
+    //     this.$router.replace((path == '/' || path == undefined) ? '/home' : path);
+    //     // // 跳转到登录前的页面或主页
+    //     // this.$router.push('/')
+    //     // // 记录用户账号
+    //     // this.$store.commit(SAVE_ACCOUNT, info.username)
+    //     // // 记录token
+    //     // this.$store.commit(RECORD_TOKEN, info.token)
+    //     // // 将uid记录到state
+    //     // this.$store.commit(SAVE_UID, info.uid)
+    //     // // 将头像路径记录到state
+    //     // this.$store.commit(SAVE_HEAD_IMG, info.avatar)
+    //   } else {
+    //
+    //   }
+    //
+    // }
   },
   computed: {
     // 控制获取验证码按钮是否可点击

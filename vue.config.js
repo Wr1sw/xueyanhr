@@ -3,6 +3,7 @@ proxyObj['/ws'] = {
   ws: false,
   target: "http://localhost:15005"
 };
+
 proxyObj['/'] = {
   ws: false,
   target: "http://localhost:15005",
