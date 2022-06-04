@@ -2,8 +2,8 @@
 <div>
   基础信息设置
   <el-tabs v-model="activeName" type="card">
-    <el-tab-pane label="部门管理" name="depmana"><DepMana></DepMana></el-tab-pane>
     <el-tab-pane label="职位管理" name="posmana"><PosMana></PosMana></el-tab-pane>
+    <el-tab-pane label="部门管理" name="depmana"><DepMana></DepMana></el-tab-pane>
     <el-tab-pane label="职称管理" name="jobmana"><JobMana></JobMana></el-tab-pane>
     <el-tab-pane label="奖惩规则" name="rpmana"><RpMana></RpMana></el-tab-pane>
 <!--    <el-tab-pane label="kpi规则" name="kpimana"><KpiMana></KpiMana></el-tab-pane>-->
@@ -26,7 +26,7 @@
     name: "SysBasic",
     data(){
       return{
-        activeName: 'depmana'
+        activeName: 'posmana'
       }
     },
     components:{

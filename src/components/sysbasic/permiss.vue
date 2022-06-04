@@ -7,7 +7,7 @@
     >
         <div class="permissManaTool">
             <el-input size="small" placeholder="请输入角色英文名" v-model="role.name">
-                <template slot="prepend">ROLE_</template>
+                <template slot="prepend">添加角色</template>
             </el-input>
             <el-input size="small" placeholder="请输入角色中文名" v-model="role.nameZh"
                       @keydown.enter.native="doAddRole"></el-input>

@@ -80,8 +80,10 @@
                 width="30%">
                 <div >
 <!--                    <div class="img-container">-->
-<!--                        <img :src="updatehr.userface" :alt="updatehr.name" :title="updatehr.name" class="userface-img">-->
+<!--                        <img :src="updatehr.userface" :alt="updatehr.name" title="点击上传" class="userface-img">-->
+
 <!--                    </div>-->
+<!--                    <el-button style="margin-left: 150px;margin-top: 10px" @click="updateImg">上传头像</el-button>-->
                     <table>
                         <tr>
                             <td><el-tag>姓名：</el-tag></td>
@@ -124,16 +126,26 @@
                     <el-button size="small" type="primary" @click="dochange">确定</el-button>
                 </span>
             </el-dialog>
+<!--        <el-dialog title="点击上传头像" :visible.sync="drawer">-->
+
+<!--            <myUpload></myUpload>-->
+<!--        </el-dialog>-->
         </div>
 <!--    </div>-->
 </template>
 
 <script>
+    // import upload from "../../components/admin/upload";
+
     export default {
         name: "SysHr",
+        // components: {
+        //     myUpload: upload,
+        // },
         data() {
             return {
-                hover: false,
+                // drawer:false,
+                // hover: false,
                 key: 0,
                 dialogVisible:false,
                 dialogTitle: '',
@@ -151,7 +163,7 @@
                     githubtoken:'',
                     enabled:'',
                     username:'',
-                    password:'',
+                    // password:'',
                     userface:''
                 },
                 updatehr:{
@@ -163,7 +175,7 @@
                     githubtoken:'',
                     enabled:'',
                     username:'',
-                    password:'',
+                    // password:'',
                     userface:''
                 },
                 Visible: false
@@ -173,9 +185,9 @@
             this.initHrs();
         },
         methods: {
-            hoverImg() {
-                this.hover = !this.hover;
-            },
+            // updateImg(){
+            //     this.drawer = true;
+            // },
             deleteHr(hr) {
                 this.$confirm('此操作将永久删除【'+hr.name+'】, 是否继续?', '提示', {
                     confirmButtonText: '确定',

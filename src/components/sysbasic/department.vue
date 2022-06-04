@@ -166,15 +166,19 @@
                 })
             },
             doAddDep() {
-                this.postRequest("/system/cfg/department/", this.dep).then(resp => {
-                    console.log(this.dep);
-                    if (resp) {
-                        this.addDep2Deps(this.deps, resp.obj);
-                        this.dialogVisible = false;
-                        //初始化变量
-                        this.initDep();
-                    }
-                })
+                if(this.dep.name) {
+                    this.postRequest("/system/cfg/department/", this.dep).then(resp => {
+                        console.log(this.dep);
+                        if (resp) {
+                            this.addDep2Deps(this.deps, resp.obj);
+                            this.dialogVisible = false;
+                            //初始化变量
+                            this.initDep();
+                        }
+                    })
+                }else{
+                    this.$message.error("部门填写为空");
+                }
             },
 
             removeDepFromDeps(p,deps, id) {

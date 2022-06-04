@@ -176,12 +176,16 @@
                 });
             },
             doUpdate() {
-                this.putRequest("/system/cfg/joblevel/", this.updateJl).then(resp => {
-                    if (resp) {
-                        this.initJls();
-                        this.dialogVisible = false;
-                    }
-                })
+                if(this.updateJl.name && this.updateJl.titlelevel) {
+                    this.putRequest("/system/cfg/joblevel/", this.updateJl).then(resp => {
+                        if (resp) {
+                            this.initJls();
+                            this.dialogVisible = false;
+                        }
+                    })
+                }else {
+                    this.$message.error("添加字段不可以为空!");
+                }
             },
             handleSelectionChange(val) {
                 this.multipleSelection = val;

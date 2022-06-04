@@ -178,24 +178,10 @@
                     }else {
                         this.rp.ecType = 0;
                     }
-                    // axios({
-                    //     url:"/rp/add",
-                    //     method: "post",
-                    //     params:{
-                    //         detail:this.rp.detail,
-                    //         result:this.rp.result
-                    //     }
-                    // }).then(resp =>{
-                    //     if (resp) {
-                    //         this.initRp();
-                    //         this.rp.detail = '';
-                    //     }
-                    // })
                     this.postRequest("/system/cfg/rp/", this.rp).then(resp => {
-                        console.log(this.rp);
                         if (resp) {
                             this.initRp();
-                            this.rp.detail = '';
+                            this.rp='';
                         }
                     })
                 } else {
@@ -207,27 +193,17 @@
                 this.dialogVisible = true;
             },
             doUpdate() {
-                // axios({
-                //     url: "/rp/update",
-                //     method: "post",
-                //     params: {
-                //         detail:this.updateRp.detail,
-                //         result:this.updateRp.result
-                //     }
-                // }).then(resp =>{
-                //     if (resp) {
-                //         this.initRp();
-                //         this.updateRp.detail = '';
-                //         this.dialogVisible = false;
-                //     }
-                // })
-                this.putRequest("/system/cfg/rp/", this.updateRp).then(resp => {
-                    if (resp) {
-                        this.initRp();
-                        this.updateRp.detail = '';
-                        this.dialogVisible = false;
-                    }
-                })
+                if (this.updateRp.detail && this.updateRp.result && this.updateRp.ecType) {
+                    this.putRequest("/system/cfg/rp/", this.updateRp).then(resp => {
+                        if (resp) {
+                            this.initRp();
+                            this.updateRp.detail = '';
+                            this.dialogVisible = false;
+                        }
+                    })
+                }else {
+                    this.$message.error('奖惩规则不可以为空');
+                }
             },
             handleDelete(index, data) {
                 this.$confirm('此操作将永久删除【' + data.detail + '】规则, 是否继续?', '提示', {

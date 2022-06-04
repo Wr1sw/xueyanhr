@@ -157,13 +157,17 @@
                 this.dialogVisible = true;
             },
             doUpdate() {
-                this.putRequest("/system/cfg/position/", this.updatePos).then(resp => {
-                    if (resp) {
-                        this.initPositions();
-                        this.updatePos.name = '';
-                        this.dialogVisible = false;
-                    }
-                })
+                if(this.updatePos.name) {
+                    this.putRequest("/system/cfg/position/", this.updatePos).then(resp => {
+                        if (resp) {
+                            this.initPositions();
+                            this.updatePos.name = '';
+                            this.dialogVisible = false;
+                        }
+                    })
+                }else {
+                    this.$message.error('职位名称不可以为空');
+                }
             },
             handleDelete(index, data) {
                 this.$confirm('此操作将永久删除【' + data.name + '】职位, 是否继续?', '提示', {
